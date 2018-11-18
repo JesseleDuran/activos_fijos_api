@@ -13,4 +13,6 @@ router.post(
     ])
 );
 
+router.get("/", handler(activos.getList, (req, res, next) => []));
+
 module.exports = router;
