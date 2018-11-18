@@ -15,4 +15,9 @@ router.post(
 
 router.get("/", handler(activos.getList, (req, res, next) => []));
 
+router.get(
+    "/:id",
+    handler(activos.show, (req, res, next) => [req.params.id])
+);
+
 module.exports = router;
