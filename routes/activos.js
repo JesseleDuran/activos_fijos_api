@@ -20,4 +20,9 @@ router.get(
     handler(activos.show, (req, res, next) => [req.params.id])
 );
 
+router.delete(
+    "/:id",
+    handler(activos.deleteActivo, (req, res, next) => [req.params.id])
+);
+
 module.exports = router;

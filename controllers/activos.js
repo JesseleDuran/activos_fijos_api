@@ -7,6 +7,7 @@ const createActivoQuery = 'INSERT INTO saf_activos';
 
 const listActivosQuery = 'SELECT * FROM saf_activos';
 const getActivoQuery = 'SELECT * FROM saf_activos WHERE id = $1';
+const deleteActivoQuery = 'DELETE FROM saf_activos WHERE id = $1';
 
 async function create(activoInfo, image) {
     try {
@@ -51,8 +52,22 @@ async function show(activoId) {
     }
 }
 
+async function deleteActivo(activoId) {
+    try {
+        const pool = new Pool();
+        await pool.connect();
+        const getActivo = await pool.query(deleteActivoQuery, [activoId]);
+        pool.end();
+        return { success: true };
+    } catch (e) {
+        console.log(e);
+        throw new ApiError("Error en los parametros ingresados", 400);
+    }
+}
+
 module.exports = {
     create,
     getList,
-    show
+    show,
+    deleteActivo
 };
