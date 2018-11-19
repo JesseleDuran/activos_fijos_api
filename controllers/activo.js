@@ -33,9 +33,9 @@ async function show(activoId) {
     try {
         const pool = new Pool();
         await pool.connect();
-        const getActivo = await pool.query(Queries.GET_ACTIVO, [activoId]);
+        const activoInfo = await pool.query(Queries.GET_ACTIVO, [activoId]);
         pool.end();
-        const [activo] = getActivo.rows;
+        const [activo] = activoInfo.rows;
         return activo;
     } catch (e) {
         console.log(e);
@@ -60,9 +60,9 @@ async function getClasificaciones() {
     try {
         const pool = new Pool();
         await pool.connect();
-        const getClasificacion = await pool.query(Queries.GET_CLASIFICACIONES);
+        const clasificacionesInfo = await pool.query(Queries.GET_CLASIFICACIONES);
         pool.end();
-        const clasificaciones = getClasificacion.rows.map(a => a.clasificacion);
+        const clasificaciones = clasificacionesInfo.rows.map(a => a.clasificacion);
         return clasificaciones;
     } catch (e) {
         console.log(e);
@@ -74,9 +74,9 @@ async function getMarcas() {
     try {
         const pool = new Pool();
         await pool.connect();
-        const getMarcas = await pool.query(Queries.GET_MARCAS);
+        const marcasInfo = await pool.query(Queries.GET_MARCAS);
         pool.end();
-        const marcas = getMarcas.rows.map(a => a.marca);
+        const marcas = marcasInfo.rows.map(a => a.marca);
         return marcas;
     } catch (e) {
         console.log(e);

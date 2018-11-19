@@ -7,9 +7,9 @@ async function getList() {
         const pool = new Pool();
         await pool.connect();
         
-        const findAllOrdenCompra = await pool.query(Queries.LIST_ORDEN_COMPRA);
+        const allOrdenCompra = await pool.query(Queries.LIST_ORDEN_COMPRA);
         pool.end();
-        return findAllOrdenCompra.rows;
+        return allOrdenCompra.rows;
     } catch (e) {
         console.log(e);
         throw new ApiError("Error en los parametros ingresados", 400);
