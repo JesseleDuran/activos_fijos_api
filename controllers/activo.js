@@ -1,6 +1,6 @@
 const { Pool } = require('pg')
 const ApiError = require("../utils/ApiError");
-const Queries = require("../constants/queries/activos");
+const Queries = require("../constants/queries/activo");
 
 async function create(activoInfo, image) {
     try {
@@ -20,9 +20,9 @@ async function getList() {
     try {
         const pool = new Pool();
         await pool.connect();
-        const findAllActivos = await pool.query(Queries.LIST_ACTIVOS);
+        const allActivos = await pool.query(Queries.LIST_ACTIVOS);
         pool.end();
-        return findAllActivos.rows;
+        return allActivos.rows;
     } catch (e) {
         console.log(e);
         throw new ApiError("Error en los parametros ingresados", 400);

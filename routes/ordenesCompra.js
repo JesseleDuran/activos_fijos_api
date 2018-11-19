@@ -1,4 +1,4 @@
-const ordenesCompra = require("../controllers/ordenesCompra");
+const ordenesCompra = require("../controllers/ordenCompra");
 const express = require("express");
 const router = express.Router();
 const secureRouter = express.Router();

@@ -1,4 +1,4 @@
-const activos = require("../controllers/activos");
+const activos = require("../controllers/activo");
 const express = require("express");
 const router = express.Router();
 const secureRouter = express.Router();

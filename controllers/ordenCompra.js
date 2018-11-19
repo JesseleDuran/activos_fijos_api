@@ -1,14 +1,13 @@
 const { Pool } = require('pg')
 const ApiError = require("../utils/ApiError");
-
-const listActivosQuery = 'SELECT * FROM soc_ordencompra'
+const Queries = require("../constants/queries/ordenCompra");
 
 async function getList() {
     try {
         const pool = new Pool();
         await pool.connect();
         
-        const findAllOrdenCompra = await pool.query(listActivosQuery);
+        const findAllOrdenCompra = await pool.query(Queries.LIST_ORDEN_COMPRA);
         pool.end();
         return findAllOrdenCompra.rows;
     } catch (e) {
