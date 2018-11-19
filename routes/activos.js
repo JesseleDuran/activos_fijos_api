@@ -15,7 +15,12 @@ router.post(
 
 router.get(
     "/clasificaciones",
-    handler(activos.getClasificacion, (req, res, next) => [])
+    handler(activos.getClasificaciones, (req, res, next) => [])
+);
+
+router.get(
+    "/marcas",
+    handler(activos.getMarcas, (req, res, next) => [])
 );
 
 router.get("/", handler(activos.getList, (req, res, next) => []));
