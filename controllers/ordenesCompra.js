@@ -10,7 +10,7 @@ async function getList() {
         
         const findAllOrdenCompra = await pool.query(listActivosQuery);
         pool.end();
-        return { activos: findAllOrdenCompra.rows };
+        return findAllOrdenCompra.rows;
     } catch (e) {
         console.log(e);
         throw new ApiError("Error en los parametros ingresados", 400);

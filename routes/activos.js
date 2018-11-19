@@ -13,6 +13,11 @@ router.post(
     ])
 );
 
+router.get(
+    "/clasificaciones",
+    handler(activos.getClasificacion, (req, res, next) => [])
+);
+
 router.get("/", handler(activos.getList, (req, res, next) => []));
 
 router.get(
