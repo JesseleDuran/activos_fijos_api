@@ -4,9 +4,9 @@ const CREATE_ACTIVO = 'INSERT INTO saf_activos'
 
 const LIST_ACTIVOS = 'SELECT * FROM saf_activos';
 
-const GET_ACTIVO = 'SELECT * FROM saf_activos WHERE id = $1';
+const GET_ACTIVO = 'SELECT * FROM saf_activos WHERE n_activo = $1';
 
-const DELETE_ACTIVO = 'DELETE FROM saf_activos WHERE id = $1';
+const DELETE_ACTIVO = 'DELETE FROM saf_activos WHERE n_activo = $1';
 
 const GET_CLASIFICACIONES = 'SELECT DISTINCT clasificacion FROM saf_activos';
 
