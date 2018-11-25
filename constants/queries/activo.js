@@ -1,6 +1,6 @@
 const CREATE_ACTIVO = 'INSERT INTO saf_activos'
-+ '(modelo, ubicacion_geografica, is_depreciable, serial, descripcion, id_soc_ordencompra, vida_util, estado_actual, clasificacion, marca)' 
-+ 'VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
++ '(n_activo, modelo, is_depreciable, serial, descripcion, id_soc_ordencompra, vida_util_meses, clasificacion, marca, cod_empresa, cod_ubicacion_fisica)' 
++ 'VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *';
 
 const LIST_ACTIVOS = 'SELECT * FROM saf_activos';
 
