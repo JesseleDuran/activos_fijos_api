@@ -26,7 +26,7 @@
 14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
 15 verbose pkgid guests_server@0.0.0
 16 verbose cwd /Users/jesseleduran/Documents/SEMESTRE VIII/pasantia/proyecto/activos_fijos_API
-17 error Darwin 16.7.0
+17 error Darwin 18.0.0
 18 error argv "/Users/jesseleduran/.nvm/versions/node/v6.11.0/bin/node" "/Users/jesseleduran/.nvm/versions/node/v6.11.0/bin/npm" "start"
 19 error node v6.11.0
 20 error npm  v3.10.10
