@@ -22,8 +22,20 @@ async function create(movimientoInfo) {
 function handleMovimientoType(movimientoInfo) {
     switch(movimientoInfo.tipo) {
         case 'asignacion':
-            return QueriesActivo.update({'estado_actual': 'Asignado'}, movimientoInfo.n_activo)
+            return QueriesActivo.update({'estado_actual': 'Asignado'}, movimientoInfo.n_activo);
             break;
+        case 'reasignacion':
+            return QueriesActivo.update({'estado_actual': 'Reasignado'}, movimientoInfo.n_activo);
+            break;
+        case 'prestacion':
+            return QueriesActivo.update({'estado_actual': 'En préstamo'}, movimientoInfo.n_activo);
+            break; 
+        case 'desincorporacion':
+            return QueriesActivo.update({'estado_actual': 'Desincorporado'}, movimientoInfo.n_activo);
+            break;
+        case 'reparacion':
+            return QueriesActivo.update({'estado_actual': 'En reparación'}, movimientoInfo.n_activo);
+            break;   
     }
 }
 
