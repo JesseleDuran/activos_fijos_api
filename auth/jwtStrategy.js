@@ -8,12 +8,10 @@ async function authenticate(userInfo, next) {
     	const pool = new Pool();
     	await pool.connect();
 		const foundUser = await pool.query(Queries.GET_USER, [userInfo.codusu]);
-		console.log(userInfo)
     	pool.end();
     	const [user] = foundUser.rows;
     	return next(null, user);
   	} catch (e) {
-		console.log(e)
     	return next(new ApiError("Usuario no Encontrado", 401), null);
  	}
 }
