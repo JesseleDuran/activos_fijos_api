@@ -16,8 +16,9 @@ async function create(activoInfo, image) {
     }
 }
 
-async function getList() {
+async function getList(sorted) {
     try {
+        console.log(sorted)
         const pool = new Pool();
         await pool.connect();
         const allActivos = await pool.query(Queries.LIST_ACTIVOS);
