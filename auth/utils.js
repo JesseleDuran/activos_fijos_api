@@ -1,4 +1,5 @@
 const jwt = require("jwt-simple");
+var crypto = require('crypto');
 
 const { User } = require("../models");
 function generateAuthToken(user) {
@@ -34,4 +35,10 @@ function generateAuthenticateBy(network, generateUser, getExtraData, redirect) {
   };
 }
 
-module.exports = { generateAuthToken, generateAuthenticateBy };
+function validPassword(inputPassword, userFoundPassword) {
+  var hash = crypto.createHash('md5').update(inputPassword).digest('hex');
+  console.log(hash)
+  return false
+}
+
+module.exports = { generateAuthToken, generateAuthenticateBy, validPassword };

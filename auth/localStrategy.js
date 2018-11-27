@@ -1,18 +1,23 @@
 const LocalStrategy = require("passport-local");
-const { User } = require("../models");
+const Queries = require("../constants/queries/user");
+const utils = require("./utils")
 
 module.exports = new LocalStrategy(
-  {
-    usernameField: "email",
-    passwordField: "password",
-    session: false
-  },
-  authenticate
+	{
+    	usernameField: "username",
+    	passwordField: "password",
+    	session: false
+  	},
+  	authenticate
 );
 
-async function authenticate(email, password, done) {
-  let user = await User.findOne({ email: email });
-  if (!user || !user.password || !user.validPassword(password))
-    return done(null, false);
-  return done(null, user);
+async function authenticate(username, password, done) {
+	const pool = new Pool();
+    await pool.connect();
+    const foundUser = await pool.query(Queries.GET_USER, username);
+    pool.end();
+    const [user] = foundUser.rows;
+  	if (!user || !user.password || !utils.validPassword(password, user.password))
+    	return done(null, false);
+  	return done(null, user);
 }
