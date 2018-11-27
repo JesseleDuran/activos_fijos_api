@@ -4,7 +4,7 @@ var crypto = require('crypto');
 const { User } = require("../models");
 function generateAuthToken(user) {
   const payload = {
-    id: user.id
+    codusu: user.codusu
   };
   return jwt.encode(payload, "Mota Rules");
 }
@@ -37,8 +37,7 @@ function generateAuthenticateBy(network, generateUser, getExtraData, redirect) {
 
 function validPassword(inputPassword, userFoundPassword) {
   var hash = crypto.createHash('md5').update(inputPassword).digest('hex');
-  console.log(hash)
-  return false
+  return hash.localeCompare(userFoundPassword) === 0;
 }
 
 module.exports = { generateAuthToken, generateAuthenticateBy, validPassword };
