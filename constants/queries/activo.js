@@ -93,10 +93,10 @@ function handleOrder(obj) {
 function handleTypeObj(obj) {
     switch(typeof(obj.value)) {
         case 'number':
-            return obj.id + "=" + obj.value
+            return obj.id + " ILIKE %" + obj.value + "%"
             break;
         case 'string':
-            return obj.id + "='" + obj.value + "'"
+            return obj.id + " ILIKE '%" + obj.value + "%'"
             break;
     }
 }
