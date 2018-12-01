@@ -6,7 +6,20 @@ async function create(activoInfo, image) {
     try {
         const pool = new Pool();
         await pool.connect();
-        const newActivo = await pool.query(Queries.CREATE_ACTIVO, Object.values(activoInfo));
+        let activoObj = {};
+        activoObj.n_activo = activoInfo.n_activo;
+        activoObj.modelo = activoInfo.n_activo;
+        activoObj.is_depreciable = activoInfo.is_depreciable;
+        activoObj.serial = activoInfo.serial;
+        activoObj.descripcion = activoInfo.descripcion;
+        activoObj.id_soc_ordencompra = activoInfo.id_soc_ordencompra;
+        activoObj.vida_util_meses = activoInfo.vida_util_meses;
+        activoObj.clasificacion = activoInfo.clasificacion;
+        activoObj.marca = activoInfo.marca;
+        activoObj.cod_empresa = activoInfo.cod_empresa;
+        activoObj.cod_ubicacion_geografica = activoInfo.cod_ubicacion_geografica;
+        
+        const newActivo = await pool.query(Queries.CREATE_ACTIVO, Object.values(activoObj));
         pool.end();
         const [activo] = newActivo.rows;
         return activo;
@@ -16,12 +29,12 @@ async function create(activoInfo, image) {
     }
 }
 
-async function getList(sorted) {
+async function getList(params) {
     try {
-        console.log(sorted)
+        console.log(Queries.listActivos(params))
         const pool = new Pool();
         await pool.connect();
-        const allActivos = await pool.query(Queries.LIST_ACTIVOS);
+        const allActivos = await pool.query(Queries.listActivos(params));
         pool.end();
         return allActivos.rows;
     } catch (e) {
