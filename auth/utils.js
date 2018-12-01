@@ -1,5 +1,5 @@
 const jwt = require("jwt-simple");
-var crypto = require('crypto');
+const md5Utils = require("./md5");
 
 const { User } = require("../models");
 function generateAuthToken(user) {
@@ -36,7 +36,7 @@ function generateAuthenticateBy(network, generateUser, getExtraData, redirect) {
 }
 
 function validPassword(inputPassword, userFoundPassword) {
-  var hash = crypto.createHash('md5').update(inputPassword).digest('hex');
+  var hash = md5Utils.calcMD5(inputPassword);
   return hash.localeCompare(userFoundPassword) === 0;
 }
 
