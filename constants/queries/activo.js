@@ -45,15 +45,13 @@ function update(params, id) {
 function buildParamsForSet(params) {
     let paramsUpdate = '';
     let i = 0;
-    for (let key in params) {
-        if (params.hasOwnProperty(key)) {
-            if(i == (Object.keys(params).length - 1)) {
-                paramsUpdate += handleKey(key, params)
-            } else {
-                paramsUpdate += `${handleKey(key, params)}, `;
-            }
-            i++;
+    for (let obj of params) {
+        if(i == (params.length - 1)) {
+            paramsUpdate += handleKey(obj)
+        } else {
+            paramsUpdate += `${handleKey(obj)}, `;
         }
+        i++;
     }
     return paramsUpdate;
 }
@@ -103,13 +101,13 @@ function handleTypeObj(obj) {
     }
 }
 
-function handleKey(key, params) {
-    switch(typeof(key)) {
+function handleKey(obj) {
+    switch(typeof(obj.value)) {
         case 'number':
-            return `${key}=${params[key]}`
+            return `${obj.id}=${obj.value}`
             break;
         case 'string':
-            return `${key}='${params[key]}'`
+            return `${obj.id}='${obj.value}'`
             break;
     }
 }

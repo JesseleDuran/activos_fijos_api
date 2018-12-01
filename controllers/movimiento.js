@@ -7,7 +7,14 @@ async function create(movimientoInfo) {
     try {
         const pool = new Pool();
         await pool.connect();
-        const newMovimiento = await pool.query(QueriesMovimiento.CREATE_MOVIMIENTO, Object.values(movimientoInfo));
+        let movimientoObj = {};
+        movimientoObj.tipo = movimientoInfo.tipo;
+        movimientoObj.motivo = movimientoInfo.motivo;
+        movimientoObj.tiempo_limite = movimientoInfo.tiempo_limite;
+        movimientoObj.ubicacion = movimientoInfo.ubicacion;
+        movimientoObj.cod_empresa = movimientoInfo.cod_empresa;
+        movimientoObj.n_activo = movimientoInfo.n_activo;
+        const newMovimiento = await pool.query(QueriesMovimiento.CREATE_MOVIMIENTO, Object.values(movimientoObj));
         const updatedActivo = await pool.query(handleMovimientoType(movimientoInfo));
         pool.end();
         const [movimiento] = newMovimiento.rows;
@@ -22,19 +29,19 @@ async function create(movimientoInfo) {
 function handleMovimientoType(movimientoInfo) {
     switch(movimientoInfo.tipo) {
         case 'asignacion':
-            return QueriesActivo.update({'estado_actual': 'Asignado'}, movimientoInfo.n_activo);
+            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'Asignado'}, {'id': 'cod_personal', 'value': movimientoInfo.cod_personal}], movimientoInfo.n_activo);
             break;
         case 'reasignacion':
-            return QueriesActivo.update({'estado_actual': 'Reasignado'}, movimientoInfo.n_activo);
+            return QueriesActivo.update([{'id':'estado_actual', 'value': 'Reasignado'}, {'id': 'cod_personal', 'value': movimientoInfo.cod_personal}], movimientoInfo.n_activo);
             break;
         case 'prestacion':
-            return QueriesActivo.update({'estado_actual': 'En préstamo'}, movimientoInfo.n_activo);
+            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'En préstamo'}], movimientoInfo.n_activo);
             break; 
         case 'desincorporacion':
-            return QueriesActivo.update({'estado_actual': 'Desincorporado'}, movimientoInfo.n_activo);
+            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'Desincorporado'}], movimientoInfo.n_activo);
             break;
         case 'reparacion':
-            return QueriesActivo.update({'estado_actual': 'En reparación'}, movimientoInfo.n_activo);
+            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'En reparación'}], movimientoInfo.n_activo);
             break;   
     }
 }
