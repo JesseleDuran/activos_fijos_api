@@ -8,13 +8,15 @@ FROM saf_activos
 JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
 LEFT JOIN sno_personal ON (saf_activos.cod_personal = sno_personal.codper);`;
 
-const GET_ACTIVO = `SELECT * FROM saf_activos JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis) WHERE n_activo = $1;`;
+const GET_ACTIVO = `SELECT * FROM saf_activos 
+JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis) 
+WHERE n_activo = $1;`;
 
 const DELETE_ACTIVO = `DELETE FROM saf_activos WHERE n_activo = '$1'`;
 
-const GET_CLASIFICACIONES = 'SELECT DISTINCT clasificacion FROM saf_activos';
+const GET_CLASIFICACIONES = `SELECT DISTINCT clasificacion FROM saf_activos`;
 
-const GET_MARCAS = 'SELECT DISTINCT marca FROM saf_activos';
+const GET_MARCAS = `SELECT DISTINCT marca FROM saf_activos`;
 
 function listActivos(params) {
 
@@ -35,7 +37,7 @@ function listActivos(params) {
 }
 
 function update(params, id) {
-    let UPDATE = 'UPDATE saf_activos SET';
+    let UPDATE = `UPDATE saf_activos SET`;
     let paramsUpdate = buildParamsForSet(params);
     return `${UPDATE} ${paramsUpdate} WHERE n_activo = '${id}' RETURNING *`;
 }
@@ -48,7 +50,7 @@ function buildParamsForSet(params) {
             if(i == (Object.keys(params).length - 1)) {
                 paramsUpdate += handleKey(key, params)
             } else {
-                paramsUpdate += handleKey(key, params) + ', ';
+                paramsUpdate += `${handleKey(key, params)}, `;
             }
             i++;
         }
@@ -57,14 +59,14 @@ function buildParamsForSet(params) {
 }
 
 function buildParamsForWhere(params) {
-    let paramsUpdate = ' WHERE ';
+    let paramsUpdate = ` WHERE `;
     let i = 0;
     for (let str of params) {
         const obj = JSON.parse(str);
         if(i == (params.length - 1)) {
             paramsUpdate += handleTypeObj(obj)
         } else {
-            paramsUpdate += handleTypeObj(obj) + ' AND ';
+            paramsUpdate += `${handleTypeObj(obj)} AND `;
         }
         i++;
     }
@@ -72,14 +74,14 @@ function buildParamsForWhere(params) {
 }
 
 function buildParamsForSorted(params) {
-    let paramsSorted = ' ORDER BY ';
+    let paramsSorted = ` ORDER BY `;
     let i = 0;
     for (let str of params) {
         const obj = JSON.parse(str);
         if(i == (params.length - 1)) {
             paramsSorted += handleOrder(obj)
         } else {
-            paramsSorted += handleOrder(obj) + ', ';
+            paramsSorted += `${handleOrder(obj)}, `;
         }
         i++;
     }
@@ -93,10 +95,10 @@ function handleOrder(obj) {
 function handleTypeObj(obj) {
     switch(typeof(obj.value)) {
         case 'number':
-            return obj.id + " ILIKE %" + obj.value + "%"
+            return `${obj.id} ILIKE %${obj.value}%`
             break;
         case 'string':
-            return obj.id + " ILIKE '%" + obj.value + "%'"
+            return `${obj.id} ILIKE '%${obj.value}%'`
             break;
     }
 }
@@ -104,10 +106,10 @@ function handleTypeObj(obj) {
 function handleKey(key, params) {
     switch(typeof(key)) {
         case 'number':
-            return key + "=" + params[key]
+            return `${key}=${params[key]}`
             break;
         case 'string':
-            return key + "='" + params[key] + "'"
+            return `${key}='${params[key]}'`
             break;
     }
 }
