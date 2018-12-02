@@ -5,11 +5,14 @@ const secureRouter = express.Router();
 const handler = require("../utils/ControllerHandler");
 const auth = require("../auth");
 
-router.post(
+secureRouter.use(auth.jwt());
+
+secureRouter.post(
     "/",
     handler(movimiento.create, (req, res, next) => [
-        req.body
+        req.body,
+        req.user
     ])
 );
 
-module.exports = router;
+module.exports = secureRouter;
