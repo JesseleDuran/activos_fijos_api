@@ -15,4 +15,9 @@ secureRouter.post(
     ])
 );
 
+secureRouter.get(
+    "/:id",
+    handler(movimiento.show, (req, res, next) => [req.params.id])
+);
+
 module.exports = secureRouter;

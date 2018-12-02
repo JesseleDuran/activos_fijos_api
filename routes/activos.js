@@ -23,6 +23,11 @@ router.get(
     handler(activo.getMarcas, (req, res, next) => [])
 );
 
+router.get(
+    "/movimiento",
+    handler(activo.getListByMovement, (req, res, next) => [req.query])
+);
+
 router.get("/", handler(activo.getList, (req, res, next) => [req.query]));
 
 router.get(

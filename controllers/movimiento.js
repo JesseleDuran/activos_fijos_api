@@ -30,6 +30,20 @@ async function create(movimientoInfo, user) {
     }
 }
 
+async function show(movimientoId) {
+    try {
+        const pool = new Pool();
+        await pool.connect();
+        const movimientoInfo = await pool.query(QueriesMovimiento.GET_MOVIMIENTO, [movimientoId]);
+        pool.end();
+        const [movimiento] = movimientoInfo.rows;
+        return movimiento;
+    } catch (e) {
+        console.log(e);
+        throw new ApiError("Error en los parametros ingresados", 400);
+    }
+}
+
 function handleMovimientoType(movimientoInfo, numActivo) {
     switch(movimientoInfo.tipo) {
         case 'asignacion':
@@ -51,5 +65,6 @@ function handleMovimientoType(movimientoInfo, numActivo) {
 }
 
 module.exports = {
-    create
+    create,
+    show
 };

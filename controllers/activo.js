@@ -44,6 +44,39 @@ async function getList(params) {
     }
 }
 
+async function getListByMovement(params) {
+    try {
+        let query = '';
+        switch (params.tipo) {
+            case 'asignacion':
+                query = Queries.update([{'id': 'estado_actual', 'value': 'Asignado'}, {'id': 'cod_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
+            break;
+            case 'reasignacion':
+                query =  Queries.update([{'id':'estado_actual', 'value': 'Reasignado'}, {'id': 'cod_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
+            break;
+            case 'prestacion':
+                query = Queries.update([{'id': 'estado_actual', 'value': 'En préstamo'}], numActivo);
+            break; 
+            case 'desincorporacion':
+                query = Queries.update([{'id': 'estado_actual', 'value': 'En proceso de desincorporación'}], numActivo);
+            break;
+            case 'reparacion':
+                query = Queries.update([{'id': 'estado_actual', 'value': 'En reparación'}], numActivo);
+            break;
+            default:
+                break;
+        }
+        /*const pool = new Pool();
+        await pool.connect();
+        const allActivos = await pool.query(Queries.listActivos(params));
+        pool.end();
+        return allActivos.rows;*/
+    } catch (e) {
+        console.log(e);
+        throw new ApiError("Error en los parametros ingresados", 400);
+    }
+}
+
 async function show(activoId) {
     try {
         const pool = new Pool();
@@ -105,5 +138,6 @@ module.exports = {
     show,
     deleteActivo,
     getClasificaciones,
-    getMarcas
+    getMarcas,
+    getListByMovement
 };
