@@ -1,6 +1,6 @@
 const CREATE_ACTIVO = `INSERT INTO saf_activos 
-(n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, clasificacion, marca, cod_empresa, cod_ubicacion_fisica)
-VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`;
+(n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, clasificacion, marca, cod_empresa, cod_ubicacion_fisica, costo)
+VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`;
 
 const LIST_ACTIVOS = `SELECT n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
 desubifis, dirubifis, cedper, nomper, apeper, dirper, telhabper, telmovper
@@ -26,14 +26,22 @@ function listActivos(params) {
     LEFT JOIN sno_personal ON (saf_activos.cod_personal = sno_personal.codper)`;
     let paramsFiltered = '';
     let paramsSorted = '';
+    let paramsSize = '';
+    let paramsPage = '';
     if(params.filtered) {
         paramsFiltered = buildParamsForWhere(params.filtered);
     }
     if(params.sorted) {
         paramsSorted = buildParamsForSorted(params.sorted);
     }
+    if(params.size) {
+        paramsSize = ` LIMIT ${params.size}`
+    }
+    if(params.page) {
+        paramsPage = ` OFFSET ${params.page * params.size}`
+    }
     
-    return `${SELECT} ${paramsFiltered} ${paramsSorted} LIMIT ${params.size} OFFSET ${params.page * params.size}`;
+    return `${SELECT} ${paramsFiltered} ${paramsSorted} ${paramsSize} ${paramsPage}`;
 }
 
 function update(params, id) {

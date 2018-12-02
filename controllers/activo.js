@@ -18,6 +18,7 @@ async function create(activoInfo, image) {
         activoObj.marca = activoInfo.marca;
         activoObj.cod_empresa = activoInfo.cod_empresa;
         activoObj.cod_ubicacion_geografica = activoInfo.cod_ubicacion_geografica;
+        activoObj.costo = activoInfo.costo;
         
         const newActivo = await pool.query(Queries.CREATE_ACTIVO, Object.values(activoObj));
         pool.end();
