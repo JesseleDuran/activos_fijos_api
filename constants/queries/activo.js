@@ -8,6 +8,36 @@ FROM saf_activos
 JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
 LEFT JOIN sno_personal ON (saf_activos.cod_personal = sno_personal.codper)`;
 
+const LIST_ACTIVOS_NO_ASIGNADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
+desubifis, dirubifis
+FROM saf_activos 
+JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
+WHERE estado_actual='No asignado'`;
+
+const LIST_ACTIVOS_NO_DESINCORPORADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
+desubifis, dirubifis
+FROM saf_activos 
+JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
+WHERE estado_actual!='En proceso de desincorporación'`;
+
+const LIST_ACTIVOS_ASIGNADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
+desubifis, dirubifis
+FROM saf_activos 
+JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
+WHERE estado_actual='Asignado'`;
+
+const LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
+desubifis, dirubifis
+FROM saf_activos 
+JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
+WHERE estado_actual!='En proceso de desincorporación' OR estado_actual!='En reparación'`;
+
+const LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
+desubifis, dirubifis
+FROM saf_activos 
+JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
+WHERE estado_actual!='En proceso de desincorporación' OR estado_actual!='En reparación'`;
+
 const GET_ACTIVO = `SELECT * FROM saf_activos 
 JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis) 
 WHERE n_activo = $1;`;
@@ -122,5 +152,10 @@ module.exports = {
     GET_CLASIFICACIONES,
     GET_MARCAS,
     update,
-    listActivos
+    listActivos,
+    LIST_ACTIVOS_NO_ASIGNADOS,
+    LIST_ACTIVOS_NO_DESINCORPORADOS,
+    LIST_ACTIVOS_ASIGNADOS,
+    LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS,
+    LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS
 };

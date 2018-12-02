@@ -49,28 +49,29 @@ async function getListByMovement(params) {
         let query = '';
         switch (params.tipo) {
             case 'asignacion':
-                query = Queries.update([{'id': 'estado_actual', 'value': 'Asignado'}, {'id': 'cod_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
-            break;
+                query = Queries.LIST_ACTIVOS_NO_ASIGNADOS;
+                break;
             case 'reasignacion':
-                query =  Queries.update([{'id':'estado_actual', 'value': 'Reasignado'}, {'id': 'cod_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
-            break;
+                query =  Queries.LIST_ACTIVOS_ASIGNADOS;
+                break;
             case 'prestacion':
-                query = Queries.update([{'id': 'estado_actual', 'value': 'En préstamo'}], numActivo);
-            break; 
+                query = Queries.LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS;
+                break; 
             case 'desincorporacion':
-                query = Queries.update([{'id': 'estado_actual', 'value': 'En proceso de desincorporación'}], numActivo);
-            break;
+                query = Queries.LIST_ACTIVOS_NO_DESINCORPORADOS;
+                break;
             case 'reparacion':
-                query = Queries.update([{'id': 'estado_actual', 'value': 'En reparación'}], numActivo);
-            break;
+                query = Queries.LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS;
+                break;
             default:
+                query = Queries.listActivos(params);
                 break;
         }
-        /*const pool = new Pool();
+        const pool = new Pool();
         await pool.connect();
-        const allActivos = await pool.query(Queries.listActivos(params));
+        const activos = await pool.query(query);
         pool.end();
-        return allActivos.rows;*/
+        return activos.rows;
     } catch (e) {
         console.log(e);
         throw new ApiError("Error en los parametros ingresados", 400);
