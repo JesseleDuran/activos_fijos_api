@@ -5,6 +5,6 @@ const secureRouter = express.Router();
 const handler = require("../utils/ControllerHandler");
 const auth = require("../auth");
 
-router.get("/", handler(personal.getList, (req, res, next) => []));
+router.get("/", handler(personal.getList, (req, res, next) => [req.query]));
 
 module.exports = router;

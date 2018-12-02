@@ -2,11 +2,11 @@ const CREATE_ACTIVO = `INSERT INTO saf_activos
 (n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, clasificacion, marca, cod_empresa, cod_ubicacion_fisica, costo)
 VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`;
 
-const LIST_ACTIVOS = `SELECT n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis, cedper, nomper, apeper, dirper, telhabper, telmovper
+const LIST_ACTIVOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
+desubifis, dirubifis, cedper, nomper, apeper, dirper, telhabper, telmovper 
 FROM saf_activos 
 JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-LEFT JOIN sno_personal ON (saf_activos.cod_personal = sno_personal.codper);`;
+LEFT JOIN sno_personal ON (saf_activos.cod_personal = sno_personal.codper)`;
 
 const GET_ACTIVO = `SELECT * FROM saf_activos 
 JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis) 
@@ -19,11 +19,6 @@ const GET_CLASIFICACIONES = `SELECT DISTINCT clasificacion FROM saf_activos`;
 const GET_MARCAS = `SELECT DISTINCT marca FROM saf_activos`;
 
 function listActivos(params) {
-
-    let SELECT = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-    desubifis, dirubifis, cedper, nomper, apeper, dirper, telhabper, telmovper FROM saf_activos 
-    JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-    LEFT JOIN sno_personal ON (saf_activos.cod_personal = sno_personal.codper)`;
     let paramsFiltered = '';
     let paramsSorted = '';
     let paramsSize = '';
@@ -41,7 +36,7 @@ function listActivos(params) {
         paramsPage = ` OFFSET ${params.page * params.size}`
     }
     
-    return `${SELECT} ${paramsFiltered} ${paramsSorted} ${paramsSize} ${paramsPage}`;
+    return `${LIST_ACTIVOS} ${paramsFiltered} ${paramsSorted} ${paramsSize} ${paramsPage}`;
 }
 
 function update(params, id) {
@@ -122,7 +117,6 @@ function handleKey(obj) {
 
 module.exports = {
     CREATE_ACTIVO,
-    LIST_ACTIVOS,
     GET_ACTIVO,
     DELETE_ACTIVO,
     GET_CLASIFICACIONES,

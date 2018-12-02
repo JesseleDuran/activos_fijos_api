@@ -2,11 +2,11 @@ const { Pool } = require('pg')
 const ApiError = require("../utils/ApiError");
 const Queries = require("../constants/queries/personal");
 
-async function getList() {
+async function getList(params) {
     try {
         const pool = new Pool();
         await pool.connect();
-        const allPersonal = await pool.query(Queries.LIST_PERSONAL);
+        const allPersonal = await pool.query(Queries.listPersonal(params));
         pool.end();
         return allPersonal.rows;
     } catch (e) {
