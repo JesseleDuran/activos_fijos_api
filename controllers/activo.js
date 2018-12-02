@@ -12,7 +12,7 @@ async function create(activoInfo, image) {
         activoObj.is_depreciable = activoInfo.is_depreciable;
         activoObj.serial = activoInfo.serial;
         activoObj.descripcion = activoInfo.descripcion;
-        activoObj.id_soc_ordencompra = activoInfo.id_soc_ordencompra;
+        activoObj.numero_orden_compra = activoInfo.numero_orden_compra;
         activoObj.vida_util_meses = activoInfo.vida_util_meses;
         activoObj.clasificacion = activoInfo.clasificacion;
         activoObj.marca = activoInfo.marca;

@@ -1,8 +1,8 @@
 const CREATE_ACTIVO = `INSERT INTO saf_activos 
-(n_activo, modelo, is_depreciable, serial, descripcion, id_soc_ordencompra, vida_util_meses, clasificacion, marca, cod_empresa, cod_ubicacion_fisica)
+(n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, clasificacion, marca, cod_empresa, cod_ubicacion_fisica)
 VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`;
 
-const LIST_ACTIVOS = `SELECT n_activo, modelo, is_depreciable, serial, descripcion, id_soc_ordencompra, vida_util_meses, estado_actual, clasificacion, marca,
+const LIST_ACTIVOS = `SELECT n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
 desubifis, dirubifis, cedper, nomper, apeper, dirper, telhabper, telmovper
 FROM saf_activos 
 JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
@@ -20,7 +20,7 @@ const GET_MARCAS = `SELECT DISTINCT marca FROM saf_activos`;
 
 function listActivos(params) {
 
-    let SELECT = `SELECT n_activo, modelo, is_depreciable, serial, descripcion, id_soc_ordencompra, vida_util_meses, estado_actual, clasificacion, marca,
+    let SELECT = `SELECT n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
     desubifis, dirubifis, cedper, nomper, apeper, dirper, telhabper, telmovper FROM saf_activos 
     JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
     LEFT JOIN sno_personal ON (saf_activos.cod_personal = sno_personal.codper)`;
