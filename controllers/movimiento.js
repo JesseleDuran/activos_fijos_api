@@ -38,7 +38,7 @@ function handleMovimientoType(movimientoInfo) {
             return QueriesActivo.update([{'id': 'estado_actual', 'value': 'En préstamo'}], movimientoInfo.n_activo);
             break; 
         case 'desincorporacion':
-            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'Desincorporado'}], movimientoInfo.n_activo);
+            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'En proceso de desincorporación'}], movimientoInfo.n_activo);
             break;
         case 'reparacion':
             return QueriesActivo.update([{'id': 'estado_actual', 'value': 'En reparación'}], movimientoInfo.n_activo);
