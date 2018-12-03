@@ -5,6 +5,19 @@ const QueriesActivo = require("../constants/queries/activo");
 const moment = require('moment-timezone');
 const schedule = require('node-schedule');
 
+async function getList() {
+    try {
+        const pool = new Pool();
+        await pool.connect();
+        const allNotificaciones = await pool.query(QueriesNotificaciones.LIST_NOTIFICACIONES);
+        pool.end();
+        return allNotificaciones.rows;
+    } catch (e) {
+        console.log(e);
+        throw new ApiError("Error en los parametros ingresados", 400);
+    }
+}
+
 async function create(notificacionInfo, pool) {
     try {
         let notificacionObj = {};
@@ -54,5 +67,6 @@ function getRemainingLife(activo, currentDate) {
 }
 
 module.exports = {
-    getListActivos
+    getListActivos,
+    getList
 };
