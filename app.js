@@ -13,6 +13,9 @@ const fileUpload = require("express-fileupload");
 const auth = require("./auth");
 const fs = require("fs");
 const https = require("https");
+const notificationsJob = require("./jobs/notificaciones")
+
+notificationsJob.checkEndOfLife();
 
 const swaggerJSDocOpts = getSwaggerJSDocOpts(process.env.NODE_ENV);
 
