@@ -9,7 +9,7 @@ function checkEndOfLife() {
 }
 
 function checkBorrowingReturn() {
-    var j = schedule.scheduleJob('fin_prestamo', '1 * * * * *', function(){
+    var j = schedule.scheduleJob('fin_prestamo', '* * 0 * * *', function(){
         console.log('checkBorrowingReturn');
         notificacionesController.createBorrowingReturnNotifications();
     });
