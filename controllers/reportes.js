@@ -6,14 +6,15 @@ const moment = require('moment');
 async function getList(params) {
     try {
         console.log(Queries.listActivos(params))
+        const currentDate = moment().tz("America/Caracas")
         const pool = new Pool();
         await pool.connect();
         const allActivos = await pool.query(Queries.listActivos(params));
         pool.end();
         const activos = allActivos.rows;
         for (let activo of activos) {
-            activo.vida_util_faltante_meses = getRemainingLife(activo, params.current_date);
-            activo.depreciacion_acumulada_meses = getDepreciacion(activo, params.current_date, params.report_date, activo.vida_util_meses);
+            activo.vida_util_faltante_meses = getRemainingLife(activo, currentDate);
+            activo.depreciacion_acumulada_meses = getDepreciacion(activo, currentDate, params.report_date, activo.vida_util_meses);
             activo.depreciacion_por_mes = (activo.vida_util_meses !== 0) ? (activo.costo/activo.vida_util_meses) : 0;
         }
         return activos;
