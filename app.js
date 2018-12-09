@@ -16,6 +16,7 @@ const https = require("https");
 const notificationsJob = require("./jobs/notificaciones")
 
 notificationsJob.checkEndOfLife();
+notificationsJob.checkBorrowingReturn();
 
 const swaggerJSDocOpts = getSwaggerJSDocOpts(process.env.NODE_ENV);
 

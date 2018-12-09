@@ -2,6 +2,7 @@ const { Pool } = require('pg')
 const ApiError = require("../utils/ApiError");
 const QueriesNotificaciones = require("../constants/queries/notificaciones");
 const QueriesActivo = require("../constants/queries/activo");
+const QueriesMovimientos = require("../constants/queries/movimiento");
 const moment = require('moment-timezone');
 const schedule = require('node-schedule');
 
@@ -32,12 +33,24 @@ async function create(notificacionInfo, pool) {
     }
 }
 
-async function getListActivos() {
+async function emptyNotificationsTable() {
     try {
         const pool = new Pool();
         await pool.connect();
         // vaciar tabla de notificaciones
         await pool.query(QueriesNotificaciones.TRUNCATE_NOTIFICACION);
+        pool.end();
+    } catch (e) {
+        console.log(e);
+        throw new ApiError("Error en los parametros ingresados", 400);
+    }
+}
+
+async function createEndOfLifeNotifications() {
+    try {
+        const pool = new Pool();
+        await pool.connect();
+        await emptyNotificationsTable()
 
         const allActivos = await pool.query(QueriesActivo.listActivos({}));
         const activos = allActivos.rows;
@@ -66,7 +79,40 @@ function getRemainingLife(activo, currentDate) {
     return moment(finVidaUtil).diff(moment(currentDate), 'weeks', true);
 }
 
+async function createBorrowingReturnNotifications() {
+    try {
+        const pool = new Pool();
+        await pool.connect();
+        await emptyNotificationsTable()
+
+        const listMovimientos = await pool.query(QueriesMovimientos.listMovimientos({'filtered': [{'id': 'tipo', 'value': 'prestacion'}]}));
+        const movimientos = listMovimientos.rows;
+        for (let movimiento of movimientos) {
+            movimiento.tiempo_faltante_retorno = getTimeLeftToReturn(movimiento, moment().tz("America/Caracas"));
+            //se agrega la notificacion si le falta 2 semanas o menos
+            if(movimiento.tiempo_faltante_retorno <= 2) {
+                let notificacionObj = {};
+                notificacionObj.tipo = 'fin_prestamo';
+                notificacionObj.data = movimiento;
+                let newNotificacion = await create(notificacionObj, pool);
+                console.log(newNotificacion);
+            }
+        }
+        pool.end();
+        var myJob = schedule.scheduledJobs['fin_prestamo'];
+        myJob.cancel();
+    } catch (e) {
+        console.log(e);
+        throw new ApiError("Error en los parametros ingresados", 400);
+    }
+}
+
+function getTimeLeftToReturn(movimiento, currentDate) {
+    return moment(movimiento.tiempo_limite).diff(moment(currentDate), 'weeks', true);
+}
+
 module.exports = {
-    getListActivos,
+    createEndOfLifeNotifications,
+    createBorrowingReturnNotifications,
     getList
 };
