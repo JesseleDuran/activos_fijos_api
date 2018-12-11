@@ -5,11 +5,11 @@ const moment = require('moment');
 
 async function getList(params) {
     try {
-        console.log(Queries.listActivos(params))
+        console.log(Queries.listActivosReportes(params))
         const currentDate = moment().tz("America/Caracas")
         const pool = new Pool();
         await pool.connect();
-        const allActivos = await pool.query(Queries.listActivos(params));
+        const allActivos = await pool.query(Queries.listActivosReportes(params));
         pool.end();
         const activos = allActivos.rows;
         for (let activo of activos) {

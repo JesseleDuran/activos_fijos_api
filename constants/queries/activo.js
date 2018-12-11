@@ -69,6 +69,27 @@ function listActivos(params) {
     return `${LIST_ACTIVOS} ${paramsFiltered} ${paramsSorted} ${paramsSize} ${paramsPage}`;
 }
 
+function listActivosReportes(params) {
+    let paramsFiltered = '';
+    let paramsSorted = '';
+    let paramsSize = '';
+    let paramsPage = '';
+    if(params.filtered) {
+        paramsFiltered = buildParamsForWhereWithOr(params.filtered);
+    }
+    if(params.sorted) {
+        paramsSorted = buildParamsForSorted(params.sorted);
+    }
+    if(params.size) {
+        paramsSize = ` LIMIT ${params.size}`
+    }
+    if(params.page) {
+        paramsPage = ` OFFSET ${params.page * params.size}`
+    }
+    
+    return `${LIST_ACTIVOS} ${paramsFiltered} ${paramsSorted} ${paramsSize} ${paramsPage}`;
+}
+
 function update(params, id) {
     let UPDATE = `UPDATE saf_activos SET`;
     let paramsUpdate = buildParamsForSet(params);
@@ -98,6 +119,21 @@ function buildParamsForWhere(params) {
             paramsUpdate += handleTypeObj(obj)
         } else {
             paramsUpdate += `${handleTypeObj(obj)} AND `;
+        }
+        i++;
+    }
+    return paramsUpdate;
+}
+
+function buildParamsForWhereWithOr(params) {
+    let paramsUpdate = ` WHERE `;
+    let i = 0;
+    for (let str of params) {
+        const obj = JSON.parse(str);
+        if(i == (params.length - 1)) {
+            paramsUpdate += handleKey(obj)
+        } else {
+            paramsUpdate += `${handleKey(obj)} OR `;
         }
         i++;
     }
@@ -157,5 +193,6 @@ module.exports = {
     LIST_ACTIVOS_NO_DESINCORPORADOS,
     LIST_ACTIVOS_ASIGNADOS,
     LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS,
-    LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS
+    LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS,
+    listActivosReportes
 };
