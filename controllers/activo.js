@@ -54,7 +54,7 @@ async function getListByMovement(params) {
             case 'reasignacion':
                 query =  Queries.LIST_ACTIVOS_ASIGNADOS;
                 break;
-            case 'prestacion':
+            case 'prestamo':
                 query = Queries.LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS;
                 break; 
             case 'desincorporacion':

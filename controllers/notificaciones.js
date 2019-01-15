@@ -85,7 +85,7 @@ async function createBorrowingReturnNotifications() {
         await pool.connect();
         await emptyNotificationsTable()
 
-        const listMovimientos = await pool.query(QueriesMovimientos.listMovimientos({'filtered': [{'id': 'tipo', 'value': 'prestacion'}]}));
+        const listMovimientos = await pool.query(QueriesMovimientos.listMovimientos({'filtered': [{'id': 'tipo', 'value': 'prestamo'}]}));
         const movimientos = listMovimientos.rows;
         for (let movimiento of movimientos) {
             movimiento.tiempo_faltante_retorno = getTimeLeftToReturn(movimiento, moment().tz("America/Caracas"));

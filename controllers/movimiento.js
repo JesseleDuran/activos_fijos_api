@@ -52,7 +52,7 @@ function handleMovimientoType(movimientoInfo, numActivo) {
         case 'reasignacion':
             return QueriesActivo.update([{'id':'estado_actual', 'value': 'Reasignado'}, {'id': 'cod_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
             break;
-        case 'prestacion':
+        case 'prestamo':
             return QueriesActivo.update([{'id': 'estado_actual', 'value': 'En préstamo'}], numActivo);
             break; 
         case 'desincorporacion':
