@@ -6,16 +6,17 @@ const moment = require('moment');
 async function getList(params) {
     try {
         console.log(Queries.listActivosReportes(params))
-        const currentDate = moment().tz("America/Caracas")
         const pool = new Pool();
         await pool.connect();
         const allActivos = await pool.query(Queries.listActivosReportes(params));
         pool.end();
         const activos = allActivos.rows;
         for (let activo of activos) {
-            activo.vida_util_faltante_meses = getRemainingLife(activo, currentDate);
-            activo.depreciacion_acumulada_meses = getDepreciacion(activo, currentDate, params.report_date, activo.vida_util_meses);
-            activo.depreciacion_por_mes = (activo.vida_util_meses !== 0) ? (activo.costo/activo.vida_util_meses) : 0;
+            activo.depreciacion_por_mes = getDepreciacionMensual(activo.costo, activo.vida_util_meses);
+            activo.meses_depreciados = getMesesDepreciados(activo.created_at, params.report_date);
+            activo.depreciacion_acumulada_meses = getDepreciacionAcumulada(activo.depreciacion_por_mes, activo.meses_depreciados);
+            activo.valor_neto = getValorNeto(activo.costo, activo.depreciacion_acumulada_meses);
+            
         }
         return activos;
     } catch (e) {
@@ -24,13 +25,24 @@ async function getList(params) {
     }
 }
 
-function getDepreciacion(activo, currentDate, reportDate, vidaUtil) {
-    return (vidaUtil !== 0) ? ((activo.costo/vidaUtil) * moment(reportDate).diff(moment(currentDate), 'months', true)) : 0;
+function getDepreciacionMensual(costo, vidaUtilMeses) {
+    return safeDivision(costo, vidaUtilMeses);
 }
 
-function getRemainingLife(activo, currentDate) {
-    let finVidaUtil = moment(activo.created_at).add(activo.vida_util_meses, 'months').format("YYYY-MM-DD");
-    return moment(finVidaUtil).diff(moment(currentDate), 'months', true);
+function getDepreciacionAcumulada(depreciacionMensual, mesesDepreciados) {
+    return depreciacionMensual * mesesDepreciados;
+}
+
+function getMesesDepreciados(activoFechaIngreso, reportDate) {
+    return moment(reportDate).diff(moment(activoFechaIngreso), 'months');
+}
+
+function getValorNeto(costo, depreciacionAcumulada) {
+    return costo - depreciacionAcumulada;
+}
+
+function safeDivision(numerador, denominador) {
+    return denominador !== 0 ? numerador / denominador : 0;
 }
 
 module.exports = {
