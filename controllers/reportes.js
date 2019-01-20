@@ -34,7 +34,9 @@ function getDepreciacionAcumulada(depreciacionMensual, mesesDepreciados) {
 }
 
 function getMesesDepreciados(activoFechaIngreso, reportDate) {
-    return moment(reportDate).diff(moment(activoFechaIngreso), 'months');
+    activoFechaIngreso = moment(activoFechaIngreso);
+    reportDate = moment(reportDate);
+    return reportDate.diff(activoFechaIngreso, 'months');
 }
 
 function getValorNeto(costo, depreciacionAcumulada) {
