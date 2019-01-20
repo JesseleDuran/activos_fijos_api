@@ -55,9 +55,9 @@ async function createEndOfLifeNotifications() {
         const allActivos = await pool.query(QueriesActivo.listActivos({}));
         const activos = allActivos.rows;
         for (let activo of activos) {
-            activo.vida_util_faltante_semanas = getRemainingLife(activo, moment().tz("America/Caracas"));
+            activo.vida_util_faltante_dias = getRemainingLife(activo, moment().tz("America/Caracas"));
             //se agrega la notificacion si le falta 2 semanas o menos
-            if(activo.vida_util_faltante_semanas <= 2) {
+            if(activo.vida_util_faltante_dias <= 14) {
                 let notificacionObj = {};
                 notificacionObj.tipo = 'fin_vida_util';
                 notificacionObj.data = activo;
@@ -76,7 +76,7 @@ async function createEndOfLifeNotifications() {
 
 function getRemainingLife(activo, currentDate) {
     let finVidaUtil = moment(activo.created_at).add(activo.vida_util_meses, 'months').format("YYYY-MM-DD");
-    return moment(finVidaUtil).diff(moment(currentDate), 'weeks', true);
+    return moment(finVidaUtil).diff(moment(currentDate), 'days', true);
 }
 
 async function createBorrowingReturnNotifications() {
