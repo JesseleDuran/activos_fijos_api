@@ -1,6 +1,8 @@
 const LIST_ORDEN_COMPRA_FACTURA = `SELECT 
     soc_ordencompra.numordcom AS orden_compra,
     cxp_rd.numrecdoc AS numero_factura,
+    cxp_rd.codtipdoc AS codigo_tipo_factura,
+    cxp_rd.ced_bene AS cedula_beneficiario,
     soc_ordencompra.cod_pro AS codigo_proveedor,
     rpc_proveedor.nompro AS nombre_proveedor,
     soc_ordencompra.cod_pro AS codigo_proveedor,
