@@ -12,10 +12,10 @@ async function getList(params) {
         pool.end();
         const activos = allActivos.rows;
         for (let activo of activos) {
-            activo.depreciacion_por_mes = getDepreciacionMensual(activo.costo, activo.vida_util_meses);
+            activo.depreciacion_por_mes = getDepreciacionMensual(activo.costo_unitario, activo.vida_util_meses);
             activo.meses_depreciados = getMesesDepreciados(activo.created_at, params.report_date);
             activo.depreciacion_acumulada_meses = getDepreciacionAcumulada(activo.depreciacion_por_mes, activo.meses_depreciados);
-            activo.valor_neto = getValorNeto(activo.costo, activo.depreciacion_acumulada_meses);
+            activo.valor_neto = getValorNeto(activo.costo_unitario, activo.depreciacion_acumulada_meses);
             
         }
         return activos;
