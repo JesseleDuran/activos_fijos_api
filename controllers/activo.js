@@ -7,18 +7,20 @@ async function create(activoInfo, image) {
         const pool = new Pool();
         await pool.connect();
         let activoObj = {};
-        activoObj.n_activo = activoInfo.n_activo;
-        activoObj.modelo = activoInfo.n_activo;
-        activoObj.is_depreciable = activoInfo.is_depreciable;
+        activoObj.modelo = activoInfo.modelo;
+        activoObj.codigo_articulo = activoInfo.codigo_articulo;
         activoObj.serial = activoInfo.serial;
         activoObj.descripcion = activoInfo.descripcion;
-        activoObj.numero_orden_compra = activoInfo.numero_orden_compra;
         activoObj.vida_util_meses = activoInfo.vida_util_meses;
         activoObj.clasificacion = activoInfo.clasificacion;
         activoObj.marca = activoInfo.marca;
-        activoObj.cod_empresa = activoInfo.cod_empresa;
-        activoObj.cod_ubicacion_geografica = activoInfo.cod_ubicacion_geografica;
-        activoObj.costo = 1000;
+        activoObj.codigo_empresa = activoInfo.cod_empresa;
+        activoObj.n_activo = activoInfo.n_activo;
+        activoObj.numero_orden_compra = activoInfo.numero_orden_compra;
+        activoObj.codigo_proveedor = activoInfo.codigo_proveedor;
+        activoObj.numero_factura = activoInfo.numero_factura;
+        activoObj.codigo_tipo_factura = activoInfo.codigo_tipo_factura;
+        activoObj.cedula_beneficiario = activoInfo.cedula_beneficiario;
         
         const newActivo = await pool.query(Queries.CREATE_ACTIVO, Object.values(activoObj));
         pool.end();

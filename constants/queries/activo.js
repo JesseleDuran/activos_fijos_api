@@ -1,6 +1,9 @@
-const CREATE_ACTIVO = `INSERT INTO saf_activos 
-(n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, clasificacion, marca, cod_empresa, cod_ubicacion_fisica, costo)
-VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`;
+const CREATE_ACTIVO = `INSERT INTO saf_activos(
+        modelo, codigo_articulo, serial, descripcion, vida_util_meses, 
+        clasificacion, marca, codigo_empresa, 
+        n_activo, numero_orden_compra, codigo_proveedor, 
+        numero_factura, codigo_tipo_factura, cedula_beneficiario)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *`;
 
 const LIST_ACTIVOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
 desubifis, dirubifis, cedper, nomper, apeper, dirper, telhabper, telmovper 
