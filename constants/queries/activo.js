@@ -30,39 +30,17 @@ FROM saf_activos
     soc_dt_bienes.estcondat = saf_activos.tipo_orden_compra AND soc_dt_bienes.codart = saf_activos.codigo_articulo)
     INNER JOIN rpc_proveedor ON rpc_proveedor.cod_pro = saf_activos.codigo_proveedor`;
 
-const LIST_ACTIVOS_NO_ASIGNADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual='No asignado'`;
+const LIST_ACTIVOS_NO_ASIGNADOS = `${LIST_ACTIVOS} WHERE estatus='No asignado'`;
 
-const LIST_ACTIVOS_NO_DESINCORPORADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual!='En proceso de desincorporación'`;
+const LIST_ACTIVOS_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación'`;
 
-const LIST_ACTIVOS_ASIGNADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual='Asignado'`;
+const LIST_ACTIVOS_ASIGNADOS = `${LIST_ACTIVOS} WHERE estatus='Asignado'`;
 
-const LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual!='En proceso de desincorporación' OR estado_actual!='En reparación'`;
+const LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación' OR estatus!='En reparación'`;
 
-const LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual!='En proceso de desincorporación' OR estado_actual!='En reparación'`;
+const LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación' OR estatus!='En reparación'`;
 
-const GET_ACTIVO = `SELECT * FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis) 
-WHERE n_activo = $1;`;
+const GET_ACTIVO = `${LIST_ACTIVOS} WHERE n_activo = $1;`;
 
 const DELETE_ACTIVO = `DELETE FROM saf_activos WHERE n_activo = '$1'`;
 
