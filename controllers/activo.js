@@ -10,7 +10,7 @@ async function create(activoInfo, image) {
         activoObj.modelo = activoInfo.modelo;
         activoObj.codigo_articulo = activoInfo.codigo_articulo;
         activoObj.serial = activoInfo.serial;
-        activoObj.descripcion = activoInfo.descripcion;
+        activoObj.descripcion = activoInfo.descripcion_activo;
         activoObj.vida_util_meses = activoInfo.vida_util_meses;
         activoObj.clasificacion = activoInfo.clasificacion;
         activoObj.marca = activoInfo.marca;
