@@ -47,19 +47,19 @@ async function show(movimientoId) {
 function handleMovimientoType(movimientoInfo, numActivo) {
     switch(movimientoInfo.tipo) {
         case 'asignacion':
-            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'Asignado'}, {'id': 'cod_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
+            return QueriesActivo.update([{'id': 'estatus', 'value': 'Asignado'}, {'id': 'codigo_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
             break;
         case 'reasignacion':
-            return QueriesActivo.update([{'id':'estado_actual', 'value': 'Reasignado'}, {'id': 'cod_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
+            return QueriesActivo.update([{'id':'estatus', 'value': 'Reasignado'}, {'id': 'codigo_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
             break;
         case 'prestamo':
-            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'En préstamo'}], numActivo);
+            return QueriesActivo.update([{'id': 'estatus', 'value': 'En préstamo'}], numActivo);
             break; 
         case 'desincorporacion':
-            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'En proceso de desincorporación'}], numActivo);
+            return QueriesActivo.update([{'id': 'estatus', 'value': 'En proceso de desincorporación'}], numActivo);
             break;
         case 'reparacion':
-            return QueriesActivo.update([{'id': 'estado_actual', 'value': 'En reparación'}], numActivo);
+            return QueriesActivo.update([{'id': 'estatus', 'value': 'En reparación'}], numActivo);
             break;   
     }
 }

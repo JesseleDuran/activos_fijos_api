@@ -1,6 +1,7 @@
 const { Pool } = require('pg')
 const ApiError = require("../utils/ApiError");
 const Queries = require("../constants/queries/activo");
+const QueriesMovimiento = require("../constants/queries/movimiento");
 
 async function create(activoInfo, image) {
     try {
@@ -85,8 +86,10 @@ async function show(activoId) {
         const pool = new Pool();
         await pool.connect();
         const activoInfo = await pool.query(Queries.GET_ACTIVO, [activoId]);
-        pool.end();
         const [activo] = activoInfo.rows;
+        const movimientos = await pool.query(QueriesMovimiento.GET_MOVIMIENTO_BY_ACTIVO, [activoId]);
+        pool.end();
+        activo.movimientos = movimientos.rows;
         return activo;
     } catch (e) {
         console.log(e);
