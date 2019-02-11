@@ -15,7 +15,7 @@ LEFT JOIN sno_personal ON (sno_personal.codper = saf_movimientos.cod_personal_in
 
 const GET_MOVIMIENTO = `${LIST_MOVIMIENTOS} WHERE saf_movimientos.id = $1;`;
 
-const GET_MOVIMIENTO_BY_ACTIVO = `${LIST_MOVIMIENTOS} WHERE n_activo = $1;`;
+const GET_MOVIMIENTO_BY_ACTIVO = `${LIST_MOVIMIENTOS} WHERE n_activo = $1 ORDER BY fecha_movimiento DESC;`;
 
 function listMovimientos(params) {
     let paramsFiltered = '';

@@ -39,6 +39,11 @@ async function getList(params) {
         const pool = new Pool();
         await pool.connect();
         const allActivos = await pool.query(Queries.listActivos(params));
+        for (x in allActivos.rows) {
+            let movimientos = null;
+            movimientos = await pool.query(QueriesMovimiento.GET_MOVIMIENTO_BY_ACTIVO, [allActivos.rows[x].n_activo]);
+            allActivos.rows[x].movimientos = movimientos.rows;
+        }
         pool.end();
         return allActivos.rows;
     } catch (e) {
