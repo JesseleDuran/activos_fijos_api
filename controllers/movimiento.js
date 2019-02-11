@@ -20,6 +20,19 @@ async function create(movimientoInfo, user) {
             movimientoObj.cod_usuario_aprobador = user.codusu;
             const newMovimiento = await pool.query(QueriesMovimiento.CREATE_MOVIMIENTO, Object.values(movimientoObj));
             const updatedActivo = await pool.query(handleMovimientoType(movimientoInfo, numActivo));
+            if(movimientoInfo.tipo === 'asignacion' || movimientoInfo.tipo === 'reasignacion') {
+                if(movimientoInfo.hasOwnProperty('codigo_unidad_administrativa')) {
+                    await QueriesActivo.update([{'id': 'codigo_unidad_administrativa', 'value': movimientoInfo.codigo_unidad_administrativa}], numActivo);
+                }
+
+                if(movimientoInfo.hasOwnProperty('ubicacion_geografica')) {
+                    await QueriesActivo.update([{'id': 'ubicacion_geografica', 'value': movimientoInfo.ubicacion_geografica}], numActivo);
+                }
+
+                if(movimientoInfo.hasOwnProperty('cod_personal_involucrado')) {
+                    await QueriesActivo.update([{'id': 'codigo_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
+                }
+            }
             movimientos.push(newMovimiento.rows[0]);
         }
         pool.end();
@@ -47,10 +60,10 @@ async function show(movimientoId) {
 function handleMovimientoType(movimientoInfo, numActivo) {
     switch(movimientoInfo.tipo) {
         case 'asignacion':
-            return QueriesActivo.update([{'id': 'estatus', 'value': 'Asignado'}, {'id': 'codigo_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
+            return QueriesActivo.update([{'id': 'estatus', 'value': 'Asignado'}], numActivo);
             break;
         case 'reasignacion':
-            return QueriesActivo.update([{'id':'estatus', 'value': 'Reasignado'}, {'id': 'codigo_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
+            return QueriesActivo.update([{'id':'estatus', 'value': 'Reasignado'}], numActivo);
             break;
         case 'prestamo':
             return QueriesActivo.update([{'id': 'estatus', 'value': 'En préstamo'}], numActivo);

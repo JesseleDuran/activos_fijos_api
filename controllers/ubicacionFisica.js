@@ -9,7 +9,8 @@ async function getList() {
         
         const allUbicacionFisica = await pool.query(Queries.LIST_UBICACION_FISICA);
         pool.end();
-        return allUbicacionFisica.rows;
+        const ubicacionesFisicas = allUbicacionFisica.rows.map(a => a.ubicacion_geografica).filter(a => a !== null);
+        return ubicacionesFisicas;
     } catch (e) {
         console.log(e);
         throw new ApiError("Error en los parametros ingresados", 400);
