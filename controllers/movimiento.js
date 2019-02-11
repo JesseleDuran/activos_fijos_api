@@ -22,15 +22,15 @@ async function create(movimientoInfo, user) {
             const updatedActivo = await pool.query(handleMovimientoType(movimientoInfo, numActivo));
             if(movimientoInfo.tipo === 'asignacion' || movimientoInfo.tipo === 'reasignacion') {
                 if(movimientoInfo.hasOwnProperty('codigo_unidad_administrativa')) {
-                    await QueriesActivo.update([{'id': 'codigo_unidad_administrativa', 'value': movimientoInfo.codigo_unidad_administrativa}], numActivo);
+                    await pool.query(QueriesActivo.update([{'id': 'codigo_unidad_administrativa', 'value': movimientoInfo.codigo_unidad_administrativa}], numActivo));
                 }
 
                 if(movimientoInfo.hasOwnProperty('ubicacion_geografica')) {
-                    await QueriesActivo.update([{'id': 'ubicacion_geografica', 'value': movimientoInfo.ubicacion_geografica}], numActivo);
+                    await pool.query(QueriesActivo.update([{'id': 'ubicacion_geografica', 'value': movimientoInfo.ubicacion_geografica}], numActivo));
                 }
 
                 if(movimientoInfo.hasOwnProperty('cod_personal_involucrado')) {
-                    await QueriesActivo.update([{'id': 'codigo_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo);
+                    await pool.query(QueriesActivo.update([{'id': 'codigo_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo));
                 }
             }
             movimientos.push(newMovimiento.rows[0]);

@@ -34,7 +34,7 @@ const LIST_ACTIVOS_NO_ASIGNADOS = `${LIST_ACTIVOS} WHERE estatus='No asignado'`;
 
 const LIST_ACTIVOS_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación'`;
 
-const LIST_ACTIVOS_ASIGNADOS = `${LIST_ACTIVOS} WHERE estatus='Asignado'`;
+const LIST_ACTIVOS_ASIGNADOS_REASIGNADO = `${LIST_ACTIVOS} WHERE estatus='Asignado' OR estatus='Reasignado'`;
 
 const LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación' OR estatus!='En reparación'`;
 
@@ -191,7 +191,7 @@ module.exports = {
     listActivos,
     LIST_ACTIVOS_NO_ASIGNADOS,
     LIST_ACTIVOS_NO_DESINCORPORADOS,
-    LIST_ACTIVOS_ASIGNADOS,
+    LIST_ACTIVOS_ASIGNADOS_REASIGNADO,
     LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS,
     LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS,
     listActivosReportes
