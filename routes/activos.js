@@ -13,6 +13,14 @@ router.post(
     ])
 );
 
+router.put(
+    "/:id",
+    handler(activo.update, (req, res, next) => [
+        req.body,
+        req.params.id
+    ])
+);
+
 router.get(
     "/clasificaciones",
     handler(activo.getClasificaciones, (req, res, next) => [])

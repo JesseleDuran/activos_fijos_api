@@ -33,6 +33,20 @@ async function create(activoInfo, image) {
     }
 }
 
+async function update(params, activoId) {
+    try {
+        const pool = new Pool();
+        await pool.connect();
+        const updatedActivo = await pool.query(Queries.update(params, activoId));
+        pool.end();
+        const [activo] = updatedActivo.rows;
+        return activo;
+    } catch (e) {
+        console.log(e);
+        throw new ApiError("Error en los parametros ingresados", 400);
+    }
+}
+
 async function getList(params) {
     try {
         console.log(Queries.listActivos(params))
@@ -150,5 +164,6 @@ module.exports = {
     deleteActivo,
     getClasificaciones,
     getMarcas,
-    getListByMovement
+    getListByMovement,
+    update
 };
