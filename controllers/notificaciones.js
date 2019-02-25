@@ -90,7 +90,7 @@ async function createBorrowingReturnNotifications() {
         for (let movimiento of movimientos) {
             movimiento.tiempo_faltante_retorno = getTimeLeftToReturn(movimiento, moment().tz("America/Caracas"));
             //se agrega la notificacion si le falta 2 semanas o menos
-            if(movimiento.tiempo_faltante_retorno <= 2) {
+            if(movimiento.tiempo_faltante_retorno <= 14 && movimiento.tiempo_faltante_retorno >= 0) {
                 let notificacionObj = {};
                 notificacionObj.tipo = 'fin_prestamo';
                 notificacionObj.data = movimiento;
@@ -108,7 +108,7 @@ async function createBorrowingReturnNotifications() {
 }
 
 function getTimeLeftToReturn(movimiento, currentDate) {
-    return moment(movimiento.tiempo_limite).diff(moment(currentDate), 'weeks', true);
+    return moment(movimiento.tiempo_limite).diff(moment(currentDate), 'days');
 }
 
 module.exports = {
