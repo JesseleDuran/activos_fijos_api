@@ -72,8 +72,10 @@ function handleMovimientoType(movimientoInfo, numActivo) {
             return QueriesActivo.update([{'id': 'estatus', 'value': 'En proceso de desincorporación'}], numActivo);
             break;
         case 'reparacion':
-            return QueriesActivo.update([{'id': 'estatus', 'value': 'En reparación'}], numActivo);
-            break;   
+            return QueriesActivo.update([{'id': 'estatus', 'value': 'En reparación'}], numActivo);    
+            break;  
+        case 'salida':
+            return QueriesActivo.update([{'id': 'estatus', 'value': 'Fuera de la empresa'}], numActivo);     
     }
 }
 
