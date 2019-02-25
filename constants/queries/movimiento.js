@@ -13,7 +13,20 @@ FROM saf_movimientos
 JOIN sss_usuarios ON (sss_usuarios.codusu = saf_movimientos.cod_usuario_aprobador) 
 LEFT JOIN sno_personal ON (sno_personal.codper = saf_movimientos.cod_personal_involucrado)`
 
-const GET_MOVIMIENTO = `${LIST_MOVIMIENTOS} WHERE saf_movimientos.id = $1;`;
+const GET_MOVIMIENTO = `SELECT id, tipo, motivo, tiempo_limite, ubicacion, cod_empresa, saf_activos.n_activo,
+cod_personal_involucrado, cod_usuario_aprobador, saf_movimientos.created_at AS fecha_movimiento,
+cedusu AS cedula_usuario, nomusu AS nombre_usuario, apeusu AS apellido_usuario, nota AS cargo_user,
+cedper AS cedula_personal, nomper AS nombre_personal, apeper AS apellido_personal,
+telhabper AS telefono_habitacion_personal, telmovper AS telefono_movil_personal,
+saf_activos.modelo, saf_activos.serial, saf_activos.descripcion, saf_activos.vida_util_meses, 
+saf_activos.clasificacion, saf_activos.marca, denasicar AS cargo_personal
+FROM saf_movimientos
+JOIN sss_usuarios ON (sss_usuarios.codusu = saf_movimientos.cod_usuario_aprobador) 
+LEFT JOIN sno_personal ON (sno_personal.codper = saf_movimientos.cod_personal_involucrado)
+JOIN saf_activos ON (saf_activos.n_activo = saf_movimientos.n_activo)
+LEFT JOIN sno_personalnomina ON (sno_personalnomina.codper = sno_personal.codper) 
+LEFT JOIN sno_asignacioncargo ON (sno_asignacioncargo.codnom = sno_personalnomina.codnom AND sno_asignacioncargo.codasicar = sno_personalnomina.codasicar) 
+WHERE saf_movimientos.id = $1;`;
 
 const GET_MOVIMIENTO_BY_ACTIVO = `${LIST_MOVIMIENTOS} WHERE n_activo = $1 ORDER BY fecha_movimiento DESC;`;
 
