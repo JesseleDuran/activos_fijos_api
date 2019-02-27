@@ -6,7 +6,6 @@ const QueriesActivo = require("../constants/queries/activo");
 async function create(movimientoInfo, user) {
     try {
         const pool = new Pool();
-        await pool.connect();
         let movimientos = [];
         for (let numActivo of movimientoInfo.n_activos) {
             let movimientoObj = {};
@@ -35,7 +34,7 @@ async function create(movimientoInfo, user) {
             }
             movimientos.push(newMovimiento.rows[0]);
         }
-        pool.end();
+        await pool.end();
         return movimientos;
     } catch (e) {
         console.log(e);
@@ -46,9 +45,8 @@ async function create(movimientoInfo, user) {
 async function show(movimientoId) {
     try {
         const pool = new Pool();
-        await pool.connect();
         const movimientoInfo = await pool.query(QueriesMovimiento.GET_MOVIMIENTO, [movimientoId]);
-        pool.end();
+        await pool.end();
         const [movimiento] = movimientoInfo.rows;
         return movimiento;
     } catch (e) {
