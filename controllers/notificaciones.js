@@ -9,9 +9,8 @@ const schedule = require('node-schedule');
 async function getList() {
     try {
         const pool = new Pool();
-        await pool.connect();
         const allNotificaciones = await pool.query(QueriesNotificaciones.LIST_NOTIFICACIONES);
-        pool.end();
+        await pool.end();
         return allNotificaciones.rows;
     } catch (e) {
         console.log(e);
@@ -36,10 +35,9 @@ async function create(notificacionInfo, pool) {
 async function emptyNotificationsTable() {
     try {
         const pool = new Pool();
-        await pool.connect();
         // vaciar tabla de notificaciones
         await pool.query(QueriesNotificaciones.TRUNCATE_NOTIFICACION);
-        pool.end();
+        await pool.end();
     } catch (e) {
         console.log(e);
         throw new ApiError("Error en los parametros ingresados", 400);
@@ -49,7 +47,6 @@ async function emptyNotificationsTable() {
 async function createEndOfLifeNotifications() {
     try {
         const pool = new Pool();
-        await pool.connect();
         await emptyNotificationsTable()
 
         const allActivos = await pool.query(QueriesActivo.listActivos({}));
@@ -65,7 +62,7 @@ async function createEndOfLifeNotifications() {
                 console.log(newNotificacion);
             }
         }
-        pool.end();
+        await pool.end();
         var myJob = schedule.scheduledJobs['fin_vida_util_job'];
         myJob.cancel();
     } catch (e) {
@@ -82,7 +79,6 @@ function getRemainingLife(activo, currentDate) {
 async function createBorrowingReturnNotifications() {
     try {
         const pool = new Pool();
-        await pool.connect();
         await emptyNotificationsTable()
 
         const listMovimientos = await pool.query(QueriesMovimientos.listMovimientos({'filtered': [{'id': 'tipo', 'value': 'prestamo'}]}));
@@ -98,7 +94,7 @@ async function createBorrowingReturnNotifications() {
                 console.log(newNotificacion);
             }
         }
-        pool.end();
+        await pool.end();
         var myJob = schedule.scheduledJobs['fin_prestamo'];
         myJob.cancel();
     } catch (e) {
