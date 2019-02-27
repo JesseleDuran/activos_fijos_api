@@ -5,10 +5,8 @@ const Queries = require("../constants/queries/ubicacionAdministrativa.js");
 async function getList() {
     try {
         const pool = new Pool();
-        await pool.connect();
-        
         const allUbicacionAdministrativa = await pool.query(Queries.LIST_UBICACION_ADMINISTRATIVA);
-        pool.end();
+        await pool.end();
         return allUbicacionAdministrativa.rows;
     } catch (e) {
         console.log(e);

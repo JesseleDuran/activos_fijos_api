@@ -7,9 +7,8 @@ async function getList(params) {
     try {
         console.log(Queries.listActivosReportes(params))
         const pool = new Pool();
-        await pool.connect();
         const allActivos = await pool.query(Queries.listActivosReportes(params));
-        pool.end();
+        await pool.end();
         const activos = allActivos.rows;
         for (let activo of activos) {
             activo.fin_vida_util = getFinVidaUtil(activo.fecha_compra, activo.vida_util_meses);
