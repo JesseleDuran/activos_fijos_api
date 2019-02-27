@@ -6,7 +6,6 @@ const QueriesMovimiento = require("../constants/queries/movimiento");
 async function create(activoInfo, image) {
     try {
         const pool = new Pool();
-        await pool.connect();
         let activoObj = {};
         activoObj.modelo = activoInfo.modelo;
         activoObj.codigo_articulo = activoInfo.codigo_articulo;
@@ -24,7 +23,7 @@ async function create(activoInfo, image) {
         activoObj.cedula_beneficiario = activoInfo.cedula_beneficiario;
         
         const newActivo = await pool.query(Queries.CREATE_ACTIVO, Object.values(activoObj));
-        pool.end();
+        await pool.end();
         const [activo] = newActivo.rows;
         return activo;
     } catch (e) {
@@ -36,9 +35,8 @@ async function create(activoInfo, image) {
 async function update(params, activoId) {
     try {
         const pool = new Pool();
-        await pool.connect();
         const updatedActivo = await pool.query(Queries.update(params, activoId));
-        pool.end();
+        await pool.end();
         const [activo] = updatedActivo.rows;
         return activo;
     } catch (e) {
@@ -51,14 +49,13 @@ async function getList(params) {
     try {
         console.log(Queries.listActivos(params))
         const pool = new Pool();
-        await pool.connect();
         const allActivos = await pool.query(Queries.listActivos(params));
         for (x in allActivos.rows) {
             let movimientos = null;
             movimientos = await pool.query(QueriesMovimiento.GET_MOVIMIENTO_BY_ACTIVO, [allActivos.rows[x].n_activo]);
             allActivos.rows[x].movimientos = movimientos.rows;
         }
-        pool.end();
+        await pool.end();
         return allActivos.rows;
     } catch (e) {
         console.log(e);
@@ -90,9 +87,8 @@ async function getListByMovement(params) {
                 break;
         }
         const pool = new Pool();
-        await pool.connect();
         const activos = await pool.query(query);
-        pool.end();
+        await pool.end();
         return activos.rows;
     } catch (e) {
         console.log(e);
@@ -103,11 +99,10 @@ async function getListByMovement(params) {
 async function show(activoId) {
     try {
         const pool = new Pool();
-        await pool.connect();
         const activoInfo = await pool.query(Queries.GET_ACTIVO, [activoId]);
         const [activo] = activoInfo.rows;
         const movimientos = await pool.query(QueriesMovimiento.GET_MOVIMIENTO_BY_ACTIVO, [activoId]);
-        pool.end();
+        await pool.end();
         activo.movimientos = movimientos.rows;
         return activo;
     } catch (e) {
@@ -119,9 +114,8 @@ async function show(activoId) {
 async function deleteActivo(activoId) {
     try {
         const pool = new Pool();
-        await pool.connect();
         await pool.query(Queries.DELETE_ACTIVO, [activoId]);
-        pool.end();
+        await pool.end();
         return { success: true };
     } catch (e) {
         console.log(e);
@@ -132,9 +126,8 @@ async function deleteActivo(activoId) {
 async function getClasificaciones() {
     try {
         const pool = new Pool();
-        await pool.connect();
         const clasificacionesInfo = await pool.query(Queries.GET_CLASIFICACIONES);
-        pool.end();
+        await pool.end();
         const clasificaciones = clasificacionesInfo.rows.map(a => a.clasificacion);
         return clasificaciones;
     } catch (e) {
@@ -146,9 +139,8 @@ async function getClasificaciones() {
 async function getMarcas() {
     try {
         const pool = new Pool();
-        await pool.connect();
         const marcasInfo = await pool.query(Queries.GET_MARCAS);
-        pool.end();
+        await pool.end();
         const marcas = marcasInfo.rows.map(a => a.marca);
         return marcas;
     } catch (e) {
