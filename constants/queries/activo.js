@@ -5,7 +5,7 @@ const CREATE_ACTIVO = `INSERT INTO saf_activos(
         numero_factura, codigo_tipo_factura, cedula_beneficiario)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *`;
 
-const LIST_ACTIVOS = `SELECT modelo, codigo_articulo, serial, descripcion, vida_util_meses, observaciones,
+const LIST_ACTIVOS = `SELECT DISTINCT modelo, codigo_articulo, serial, descripcion, vida_util_meses, observaciones,
     estatus, clasificacion, marca, codigo_personal, codigo_empresa, 
     ubicacion_geografica, n_activo, numero_orden_compra, created_at, 
     codigo_unidad_administrativa, tipo_orden_compra, codigo_proveedor, 
