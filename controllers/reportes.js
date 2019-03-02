@@ -9,13 +9,17 @@ async function getList(params) {
         const pool = new Pool();
         const allActivos = await pool.query(Queries.listActivosReportes(params));
         await pool.end();
+        let mesesDepreciados = 0
         const activos = allActivos.rows;
         for (let activo of activos) {
             activo.fin_vida_util = getFinVidaUtil(activo.fecha_compra, activo.vida_util_meses);
             activo.depreciacion_por_mes = getDepreciacionMensual(activo.costo_unitario, activo.vida_util_meses);
-            activo.meses_depreciados = getMesesDepreciados(activo.fecha_compra, params.report_date);
-            activo.depreciacion_acumulada_meses = getDepreciacionAcumulada(activo.depreciacion_por_mes, activo.meses_depreciados);
-            activo.valor_neto = getValorNeto(activo.costo_unitario, activo.depreciacion_acumulada_meses);
+            mesesDepreciados = getMesesDepreciados(activo.fecha_compra, params.report_date);
+            isFinVidaUtil = mesesDepreciados > activo.vida_util_meses;
+            activo.meses_depreciados = isFinVidaUtil ? activo.vida_util_meses : mesesDepreciados;
+            activo.depreciacion_acumulada_meses = isFinVidaUtil ? 0 : getDepreciacionAcumulada(activo.depreciacion_por_mes, activo.meses_depreciados);
+            activo.valor_neto = isFinVidaUtil ? 0 : getValorNeto(activo.costo_unitario, activo.depreciacion_acumulada_meses);
+            activo.llego_fin = isFinVidaUtil ? 'Sí' : 'No'
             
         }
         return activos;
