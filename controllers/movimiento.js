@@ -17,6 +17,9 @@ async function create(movimientoInfo, user) {
             movimientoObj.n_activo = numActivo;
             movimientoObj.cod_personal_involucrado = movimientoInfo.cod_personal_involucrado;
             movimientoObj.cod_usuario_aprobador = user.codusu;
+            movimientoObj.ubicacion_geografica = movimientoInfo.ubicacion_geografica;
+            movimientoObj.ubicacion_administrativa = movimientoInfo.ubicacion_administrativa;
+            movimientoObj.departamento = movimientoInfo.departamento;
             const newMovimiento = await pool.query(QueriesMovimiento.CREATE_MOVIMIENTO, Object.values(movimientoObj));
             const updatedActivo = await pool.query(handleMovimientoType(movimientoInfo, numActivo));
             if(movimientoInfo.tipo === 'asignacion' || movimientoInfo.tipo === 'reasignacion') {
@@ -26,6 +29,10 @@ async function create(movimientoInfo, user) {
 
                 if(movimientoInfo.hasOwnProperty('ubicacion_geografica')) {
                     await pool.query(QueriesActivo.update([{'id': 'ubicacion_geografica', 'value': movimientoInfo.ubicacion_geografica}], numActivo));
+                }
+
+                if(movimientoInfo.hasOwnProperty('departamento')) {
+                    await pool.query(QueriesActivo.update([{'id': 'departamento', 'value': movimientoInfo.departamento}], numActivo));
                 }
 
                 if(movimientoInfo.hasOwnProperty('cod_personal_involucrado')) {
