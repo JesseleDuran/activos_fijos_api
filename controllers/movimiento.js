@@ -24,19 +24,23 @@ async function create(movimientoInfo, user) {
             const updatedActivo = await pool.query(handleMovimientoType(movimientoInfo, numActivo));
             if(movimientoInfo.tipo === 'asignacion' || movimientoInfo.tipo === 'reasignacion') {
                 if(movimientoInfo.hasOwnProperty('ubicacion_administrativa')) {
-                    await pool.query(QueriesActivo.update([{'id': 'ubicacion_administrativa', 'value': movimientoInfo.ubicacion_administrativa}], numActivo));
+                    if(movimientoInfo.ubicacion_administrativa !== '' && movimientoInfo.ubicacion_administrativa !== null)
+                        await pool.query(QueriesActivo.update([{'id': 'ubicacion_administrativa', 'value': movimientoInfo.ubicacion_administrativa}], numActivo));
                 }
 
                 if(movimientoInfo.hasOwnProperty('ubicacion_geografica')) {
-                    await pool.query(QueriesActivo.update([{'id': 'ubicacion_geografica', 'value': movimientoInfo.ubicacion_geografica}], numActivo));
+                    if(movimientoInfo.ubicacion_geografica !== '' && movimientoInfo.ubicacion_geografica !== null)
+                        await pool.query(QueriesActivo.update([{'id': 'ubicacion_geografica', 'value': movimientoInfo.ubicacion_geografica}], numActivo));
                 }
 
                 if(movimientoInfo.hasOwnProperty('departamento')) {
-                    await pool.query(QueriesActivo.update([{'id': 'departamento', 'value': movimientoInfo.departamento}], numActivo));
+                    if(movimientoInfo.departamento !== '' && movimientoInfo.departamento !== null)
+                        await pool.query(QueriesActivo.update([{'id': 'departamento', 'value': movimientoInfo.departamento}], numActivo));
                 }
 
                 if(movimientoInfo.hasOwnProperty('cod_personal_involucrado')) {
-                    await pool.query(QueriesActivo.update([{'id': 'codigo_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo));
+                    if(movimientoInfo.cod_personal_involucrado !== '' && movimientoInfo.cod_personal_involucrado !== null)
+                        await pool.query(QueriesActivo.update([{'id': 'codigo_personal', 'value': movimientoInfo.cod_personal_involucrado}], numActivo));
                 }
             }
             movimientos.push(newMovimiento.rows[0]);
