@@ -7,7 +7,8 @@ async function getList() {
         const pool = new Pool();
         const allUbicacionAdministrativa = await pool.query(Queries.LIST_UBICACION_ADMINISTRATIVA);
         await pool.end();
-        return allUbicacionAdministrativa.rows;
+        const ubicacionesAdministrativas = allUbicacionAdministrativa.rows.map(a => a.ubicacion_administrativa).filter(a => a !== null);
+        return ubicacionesAdministrativas;
     } catch (e) {
         console.log(e);
         throw new ApiError("Error en los parametros ingresados", 400);

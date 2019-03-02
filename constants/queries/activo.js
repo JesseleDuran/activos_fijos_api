@@ -8,9 +8,9 @@ const CREATE_ACTIVO = `INSERT INTO saf_activos(
 const LIST_ACTIVOS = `SELECT DISTINCT modelo, codigo_articulo, serial, descripcion, vida_util_meses, observaciones,
     estatus, clasificacion, marca, codigo_personal, codigo_empresa, 
     ubicacion_geografica, n_activo, numero_orden_compra, created_at, 
-    codigo_unidad_administrativa, tipo_orden_compra, codigo_proveedor, 
+    departamento, tipo_orden_compra, codigo_proveedor, 
     condicion, numero_factura, codigo_tipo_factura, cedula_beneficiario,
-    spg_unidadadministrativa.denuniadm AS unidad_administrativa,
+    ubicacion_administrativa,
     siv_articulo.spg_cuenta AS cuenta_presupuestaria,
     soc_ordencompra.coduniadm AS centro_costo,
     cxp_rd.fecemidoc AS fecha_compra,
@@ -18,7 +18,6 @@ const LIST_ACTIVOS = `SELECT DISTINCT modelo, codigo_articulo, serial, descripci
     soc_ordencompra.forpagcom AS condicion_pago,
     rpc_proveedor.nompro AS nombre_proveedor
 FROM saf_activos
-    LEFT JOIN spg_unidadadministrativa ON spg_unidadadministrativa.coduniadm = saf_activos.codigo_unidad_administrativa
     INNER JOIN siv_articulo ON siv_articulo.codart = saf_activos.codigo_articulo
     INNER JOIN soc_ordencompra ON (soc_ordencompra.numordcom = saf_activos.numero_orden_compra AND soc_ordencompra.estcondat = saf_activos.tipo_orden_compra)
     INNER JOIN cxp_rd ON 
