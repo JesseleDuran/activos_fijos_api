@@ -15,7 +15,8 @@ JOIN sss_usuarios ON (sss_usuarios.codusu = saf_movimientos.cod_usuario_aprobado
 LEFT JOIN sno_personal ON (sno_personal.codper = saf_movimientos.cod_personal_involucrado)`
 
 const GET_MOVIMIENTO = `SELECT id, tipo, motivo, tiempo_limite, ubicacion, cod_empresa, saf_activos.n_activo,
-cod_personal_involucrado, cod_usuario_aprobador, ubicacion_geografica, ubicacion_administrativa, departamento,
+cod_personal_involucrado, cod_usuario_aprobador, saf_movimientos.ubicacion_geografica, saf_movimientos.ubicacion_administrativa, 
+saf_movimientos.departamento,
 saf_movimientos.created_at AS fecha_movimiento,
 cedusu AS cedula_usuario, nomusu AS nombre_usuario, apeusu AS apellido_usuario, nota AS cargo_user,
 cedper AS cedula_personal, nomper AS nombre_personal, apeper AS apellido_personal,
