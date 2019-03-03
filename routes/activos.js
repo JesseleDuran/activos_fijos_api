@@ -200,7 +200,7 @@ secureRouter.get(
  *         description: Los activos fueron retornados exitosamente.
  *         type: array
  *         items:
- *             $ref: '#/definitions/ActivoConMovimiento'
+ *             $ref: '#/definitions/Activo'
  *       401:
  *         description: No autorizado.
  *         type: string
@@ -219,20 +219,114 @@ secureRouter.get(
  *      - Activos
  *     produces:
  *      - application/json
+ *     parameters:
+ *       - name: page
+ *         description: Página actual.
+ *         in: query
+ *         type: integer
+ *       - name: size
+ *         description: Cantidad de activos que se quieren devolver.
+ *         in: query
+ *         type: integer
+ *       - name: filtered
+ *         description: Cantidad de activos que se quieren devolver.
+ *         in: query
+ *         type: array
+ *         items:
+ *           type: object
+ *           properties:
+ *             id:
+ *               description: Nombre del atributo que por el que se quiere filtrar.
+ *               type: string.
+ *             value:
+ *               description: Valor con el que se quiere filtrar el atributo.
+ *               type: string.
+ *       - name: sorted
+ *         description: Cantidad de activos que se quieren devolver.
+ *         in: query
+ *         type: array
+ *         items:
+ *           type: object
+ *           properties:
+ *             id:
+ *               description: Nombre del atributo que por el que se quiere ordenar.
+ *               type: string.
+ *             value:
+ *               desc: Manera que se quiere ordenar el atributo.
+ *               type: boolean.
  *     responses:
  *       200:
  *         description: Los activos fueron retornados exitosamente.
+ *         type: array
+ *         items:
+ *             $ref: '#/definitions/ActivoConMovimiento'
  *       401:
  *         description: No autorizado.
  *         type: string
  */
 secureRouter.get("/", handler(activo.getList, (req, res, next) => [req.query]));
 
+/**
+ * @swagger
+ * /activos/{id}:
+ *   get:
+ *     description: Obtener un activo.
+ *     tags:
+ *      - Activos
+ *     produces:
+ *      - application/json
+ *     parameters:
+ *       - name: id
+ *         description: Número de activo que se ve quiere obtener.
+ *         in: path
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: El activo fue retornado exitosamente.
+ *         schema:
+ *           $ref: '#/definitions/ActivoConMovimiento'
+ *       400:
+ *         description: Hubo algún problema en los parámetros ingresados.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *       401:
+ *         description: No autorizado.
+ *         type: string
+ * 
+ */
 secureRouter.get(
     "/:id",
     handler(activo.show, (req, res, next) => [req.params.id])
 );
 
+/**
+ * @swagger
+ * /activos/{id}:
+ *   delete:
+ *     description: Eliminar un activo.
+ *     tags:
+ *      - Activos
+ *     produces:
+ *      - application/json
+ *     parameters:
+ *       - name: id
+ *         description: Número de activo que se ve quiere eliminar.
+ *         in: path
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: El activo fue eliminado exitosamente.
+ *         schema:
+ *           $ref: '#/definitions/ActivoConMovimiento'
+ *       400:
+ *         description: Hubo algún problema en los parámetros ingresados.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *       401:
+ *         description: No autorizado.
+ *         type: string
+ * 
+ */
 secureRouter.delete(
     "/:id",
     handler(activo.deleteActivo, (req, res, next) => [req.params.id])
