@@ -147,6 +147,10 @@ secureRouter.put(
  *         type: array
  *         items:
  *           type: string
+ *       400:
+ *         description: Hubo algún problema.
+ *         schema:
+ *           $ref: '#/definitions/Error'
  *       401:
  *         description: No autorizado.
  *         type: string
@@ -171,6 +175,10 @@ secureRouter.get(
  *         type: array
  *         items:
  *           type: string
+ *       400:
+ *         description: Hubo algún problema.
+ *         schema:
+ *           $ref: '#/definitions/Error'
  *       401:
  *         description: No autorizado.
  *         type: string
@@ -201,6 +209,10 @@ secureRouter.get(
  *         type: array
  *         items:
  *             $ref: '#/definitions/Activo'
+ *       400:
+ *         description: Hubo algún problema.
+ *         schema:
+ *           $ref: '#/definitions/Error'
  *       401:
  *         description: No autorizado.
  *         type: string
@@ -260,6 +272,10 @@ secureRouter.get(
  *         type: array
  *         items:
  *             $ref: '#/definitions/ActivoConMovimiento'
+ *       400:
+ *         description: Hubo algún problema.
+ *         schema:
+ *           $ref: '#/definitions/Error'
  *       401:
  *         description: No autorizado.
  *         type: string
