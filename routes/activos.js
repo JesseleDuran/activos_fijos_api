@@ -316,8 +316,11 @@ secureRouter.get(
  *     responses:
  *       200:
  *         description: El activo fue eliminado exitosamente.
- *         schema:
- *           $ref: '#/definitions/ActivoConMovimiento'
+ *         type: object
+ *         properties:
+ *           success:
+ *             description: Indica que el activo fue eliminado exitosamente.
+ *             type: boolean
  *       400:
  *         description: Hubo algún problema en los parámetros ingresados.
  *         schema:

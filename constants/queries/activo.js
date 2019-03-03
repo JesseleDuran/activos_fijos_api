@@ -41,7 +41,7 @@ const LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE est
 
 const GET_ACTIVO = `${LIST_ACTIVOS} WHERE n_activo = $1;`;
 
-const DELETE_ACTIVO = `DELETE FROM saf_activos WHERE n_activo = '$1'`;
+const DELETE_ACTIVO = `DELETE FROM saf_activos WHERE n_activo = $1`;
 
 const GET_CLASIFICACIONES = `SELECT DISTINCT clasificacion FROM saf_activos`;
 
