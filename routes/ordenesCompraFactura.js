@@ -61,6 +61,13 @@ secureRouter.use(auth.jwt());
  *               type: string
  *             unidad_administrativa:
  *               type: string
+ *       400:
+ *         description: Hubo algún problema en los parámetros ingresados.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *       401:
+ *         description: No autorizado.
+ *         type: string
  */
 secureRouter.get("/", handler(ordenCompraFactura.getList, (req, res, next) => []));
 

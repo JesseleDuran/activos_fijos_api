@@ -21,6 +21,13 @@ secureRouter.use(auth.jwt());
  *         type: array
  *         items:
  *             $ref: '#/definitions/Notificacion'
+ *       400:
+ *         description: Hubo algún problema en los parámetros ingresados.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *       401:
+ *         description: No autorizado.
+ *         type: string
  */
 secureRouter.get("/", handler(notificaciones.getList, (req, res, next) => []));
 
