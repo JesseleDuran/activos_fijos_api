@@ -241,7 +241,7 @@ secureRouter.get(
  *         in: query
  *         type: integer
  *       - name: filtered
- *         description: Cantidad de activos que se quieren devolver.
+ *         description: Filtros que se quieren aplicar al query.
  *         in: query
  *         type: array
  *         items:
