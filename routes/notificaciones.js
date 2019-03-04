@@ -1,9 +1,10 @@
 const notificaciones = require("../controllers/notificaciones");
 const express = require("express");
-const router = express.Router();
 const secureRouter = express.Router();
 const handler = require("../utils/ControllerHandler");
 const auth = require("../auth");
+
+secureRouter.use(auth.jwt());
 
 /**
  * @swagger
@@ -14,11 +15,13 @@ const auth = require("../auth");
  *      - Notificaciones
  *     produces:
  *      - application/json
- *     security: []
  *     responses:
  *       200:
  *         description: Las notificaciones fueron retornadas exitosamente.
+ *         type: array
+ *         items:
+ *             $ref: '#/definitions/Notificacion'
  */
-router.get("/", handler(notificaciones.getList, (req, res, next) => []));
+secureRouter.get("/", handler(notificaciones.getList, (req, res, next) => []));
 
-module.exports = router;
+module.exports = secureRouter;
