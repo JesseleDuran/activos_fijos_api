@@ -189,7 +189,7 @@
  *         description: Departamento al que pertenece el activo.
  *         type: array
  *         items:
- *             $ref: '#/definitions/Movimiento'
+ *             $ref: '#/definitions/MovimientoConUser'
  */
 
 
