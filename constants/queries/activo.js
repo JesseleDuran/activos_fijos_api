@@ -16,7 +16,8 @@ const LIST_ACTIVOS = `SELECT DISTINCT modelo, codigo_articulo, serial, descripci
     cxp_rd.fecemidoc AS fecha_compra,
     soc_dt_bienes.preuniart AS costo_unitario,
     soc_ordencompra.forpagcom AS condicion_pago,
-    rpc_proveedor.nompro AS nombre_proveedor
+    rpc_proveedor.nompro AS nombre_proveedor,
+    cedper AS cedula_personal, nomper AS nombre_personal, apeper AS apellido_personal
 FROM saf_activos
     INNER JOIN siv_articulo ON siv_articulo.codart = saf_activos.codigo_articulo
     INNER JOIN soc_ordencompra ON (soc_ordencompra.numordcom = saf_activos.numero_orden_compra AND soc_ordencompra.estcondat = saf_activos.tipo_orden_compra)
@@ -27,7 +28,8 @@ FROM saf_activos
     INNER JOIN soc_dt_bienes ON 
     (soc_dt_bienes.numordcom = saf_activos.numero_orden_compra AND 
     soc_dt_bienes.estcondat = saf_activos.tipo_orden_compra AND soc_dt_bienes.codart = saf_activos.codigo_articulo)
-    INNER JOIN rpc_proveedor ON rpc_proveedor.cod_pro = saf_activos.codigo_proveedor`;
+    INNER JOIN rpc_proveedor ON rpc_proveedor.cod_pro = saf_activos.codigo_proveedor
+    LEFT JOIN sno_personal ON (sno_personal.codper = saf_activos.codigo_personal)`;
 
 const LIST_ACTIVOS_NO_ASIGNADOS = `${LIST_ACTIVOS} WHERE estatus='No asignado'`;
 

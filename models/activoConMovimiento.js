@@ -104,6 +104,12 @@
  *         type: string
  *       nombre_proveedor:
  *         type: string
+ *       cedula_personal:
+ *         type: string
+ *       nombre_personal:
+ *         type: string
+ *       apellido_personal:
+ *         type: string
  *       movimientos:
  *         description: Departamento al que pertenece el activo.
  *         type: array
