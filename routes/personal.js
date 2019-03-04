@@ -7,7 +7,7 @@ const auth = require("../auth");
 
 /**
  * @swagger
- * /ordenescomprafactura:
+ * /personal:
  *   get:
  *     description: Retorna los valores necesarios de las órdenes de compra y las facturas para crear un activo.
  *     tags:
