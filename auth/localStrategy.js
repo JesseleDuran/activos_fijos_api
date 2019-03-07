@@ -14,9 +14,8 @@ module.exports = new LocalStrategy(
 
 async function authenticate(username, password, done) {
 	const pool = new Pool();
-    await pool.connect();
 	const foundUser = await pool.query(Queries.GET_USER, [username]);
-    pool.end();
+    await pool.end();
     const [user] = foundUser.rows;
   	if (!user || !user.pwdusu || !utils.validPassword(password, user.pwdusu))
     	return done(null, false);

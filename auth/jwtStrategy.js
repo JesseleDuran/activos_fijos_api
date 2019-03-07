@@ -6,9 +6,8 @@ const Queries = require("../constants/queries/user");
 async function authenticate(userInfo, next) {
   	try {
     	const pool = new Pool();
-    	await pool.connect();
 		const foundUser = await pool.query(Queries.GET_USER, [userInfo.codusu]);
-    	pool.end();
+    	await pool.end();
     	const [user] = foundUser.rows;
     	return next(null, user);
   	} catch (e) {

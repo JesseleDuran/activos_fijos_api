@@ -1,4 +1,4 @@
-const notificaciones = require("../controllers/notificaciones");
+const departamento = require("../controllers/departamento");
 const express = require("express");
 const secureRouter = express.Router();
 const handler = require("../utils/ControllerHandler");
@@ -8,27 +8,27 @@ secureRouter.use(auth.jwt());
 
 /**
  * @swagger
- * /notificaciones:
+ * /departamentos:
  *   get:
- *     description: Retorna todas las notificaciones del momento.
+ *     description: Retorna los departamentos disponibles.
  *     tags:
- *      - Notificaciones
+ *      - Departamentos
  *     produces:
  *      - application/json
  *     responses:
  *       200:
- *         description: Las notificaciones fueron retornadas exitosamente.
+ *         description: Los departmanrtos fueron retornados exitosamente.
  *         type: array
  *         items:
- *             $ref: '#/definitions/Notificacion'
+ *           type: string
  *       400:
- *         description: Hubo algún problema en los parámetros ingresados.
+ *         description: Hubo algún problema.
  *         schema:
  *           $ref: '#/definitions/Error'
  *       401:
  *         description: No autorizado.
  *         type: string
  */
-secureRouter.get("/", handler(notificaciones.getList, (req, res, next) => []));
+secureRouter.get("/", handler(departamento.getList, (req, res, next) => []));
 
 module.exports = secureRouter;

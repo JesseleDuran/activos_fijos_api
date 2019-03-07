@@ -5,9 +5,8 @@ const Queries = require("../constants/queries/personal");
 async function getList(params) {
     try {
         const pool = new Pool();
-        await pool.connect();
         const allPersonal = await pool.query(Queries.listPersonal(params));
-        pool.end();
+        await pool.end();
         return allPersonal.rows;
     } catch (e) {
         console.log(e);

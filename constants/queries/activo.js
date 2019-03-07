@@ -1,48 +1,49 @@
-const CREATE_ACTIVO = `INSERT INTO saf_activos 
-(n_activo, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, clasificacion, marca, cod_empresa, cod_ubicacion_fisica, costo)
-VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`;
+const CREATE_ACTIVO = `INSERT INTO saf_activos(
+        modelo, codigo_articulo, serial, descripcion, vida_util_meses, 
+        clasificacion, marca, codigo_empresa, 
+        n_activo, numero_orden_compra, codigo_proveedor, 
+        numero_factura, codigo_tipo_factura, cedula_beneficiario)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *`;
 
-const LIST_ACTIVOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis, cedper, nomper, apeper, dirper, telhabper, telmovper 
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-LEFT JOIN sno_personal ON (saf_activos.cod_personal = sno_personal.codper)`;
+const LIST_ACTIVOS = `SELECT DISTINCT modelo, codigo_articulo, serial, descripcion, vida_util_meses, observaciones,
+    estatus, clasificacion, marca, codigo_personal, codigo_empresa, 
+    ubicacion_geografica, n_activo, numero_orden_compra, created_at, 
+    departamento, tipo_orden_compra, codigo_proveedor, 
+    condicion, numero_factura, codigo_tipo_factura, cedula_beneficiario,
+    ubicacion_administrativa,
+    siv_articulo.spg_cuenta AS cuenta_presupuestaria,
+    soc_ordencompra.coduniadm AS centro_costo,
+    cxp_rd.fecemidoc AS fecha_compra,
+    soc_dt_bienes.preuniart AS costo_unitario,
+    soc_ordencompra.forpagcom AS condicion_pago,
+    rpc_proveedor.nompro AS nombre_proveedor,
+    cedper AS cedula_personal, nomper AS nombre_personal, apeper AS apellido_personal
+FROM saf_activos
+    INNER JOIN siv_articulo ON siv_articulo.codart = saf_activos.codigo_articulo
+    INNER JOIN soc_ordencompra ON (soc_ordencompra.numordcom = saf_activos.numero_orden_compra AND soc_ordencompra.estcondat = saf_activos.tipo_orden_compra)
+    INNER JOIN cxp_rd ON 
+    (cxp_rd.numrecdoc = saf_activos.numero_factura AND 
+    cxp_rd.codtipdoc = saf_activos.codigo_tipo_factura AND 
+    cxp_rd.ced_bene = saf_activos.cedula_beneficiario AND cxp_rd.cod_pro = saf_activos.codigo_proveedor)
+    INNER JOIN soc_dt_bienes ON 
+    (soc_dt_bienes.numordcom = saf_activos.numero_orden_compra AND 
+    soc_dt_bienes.estcondat = saf_activos.tipo_orden_compra AND soc_dt_bienes.codart = saf_activos.codigo_articulo)
+    INNER JOIN rpc_proveedor ON rpc_proveedor.cod_pro = saf_activos.codigo_proveedor
+    LEFT JOIN sno_personal ON (sno_personal.codper = saf_activos.codigo_personal)`;
 
-const LIST_ACTIVOS_NO_ASIGNADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual='No asignado'`;
+const LIST_ACTIVOS_NO_ASIGNADOS = `${LIST_ACTIVOS} WHERE estatus='No asignado'`;
 
-const LIST_ACTIVOS_NO_DESINCORPORADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual!='En proceso de desincorporación'`;
+const LIST_ACTIVOS_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación'`;
 
-const LIST_ACTIVOS_ASIGNADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual='Asignado'`;
+const LIST_ACTIVOS_ASIGNADOS_REASIGNADO = `${LIST_ACTIVOS} WHERE estatus='Asignado' OR estatus='Reasignado'`;
 
-const LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual!='En proceso de desincorporación' OR estado_actual!='En reparación'`;
+const LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación' OR estatus!='En reparación'`;
 
-const LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS = `SELECT n_activo, costo, created_at, modelo, is_depreciable, serial, descripcion, numero_orden_compra, vida_util_meses, estado_actual, clasificacion, marca,
-desubifis, dirubifis
-FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis)
-WHERE estado_actual!='En proceso de desincorporación' OR estado_actual!='En reparación'`;
+const LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación' OR estatus!='En reparación'`;
 
-const GET_ACTIVO = `SELECT * FROM saf_activos 
-JOIN sno_ubicacionfisica ON (saf_activos.cod_ubicacion_fisica = sno_ubicacionfisica.codubifis) 
-WHERE n_activo = $1;`;
+const GET_ACTIVO = `${LIST_ACTIVOS} WHERE n_activo = $1;`;
 
-const DELETE_ACTIVO = `DELETE FROM saf_activos WHERE n_activo = '$1'`;
+const DELETE_ACTIVO = `DELETE FROM saf_activos WHERE n_activo = $1`;
 
 const GET_CLASIFICACIONES = `SELECT DISTINCT clasificacion FROM saf_activos`;
 
@@ -191,7 +192,7 @@ module.exports = {
     listActivos,
     LIST_ACTIVOS_NO_ASIGNADOS,
     LIST_ACTIVOS_NO_DESINCORPORADOS,
-    LIST_ACTIVOS_ASIGNADOS,
+    LIST_ACTIVOS_ASIGNADOS_REASIGNADO,
     LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS,
     LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS,
     listActivosReportes
