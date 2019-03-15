@@ -54,7 +54,7 @@ async function createEndOfLifeNotifications() {
         for (let activo of activos) {
             activo.vida_util_faltante_dias = getRemainingLife(activo, moment().tz("America/Caracas"));
             //se agrega la notificacion si le falta 2 semanas o menos
-            if(activo.vida_util_faltante_dias <= 14 && activo.vida_util_faltante_dias >= 0) {
+            if(activo.vida_util_faltante_dias <= 65 && activo.vida_util_faltante_dias >= 0) {
                 let notificacionObj = {};
                 notificacionObj.tipo = 'fin_vida_util';
                 notificacionObj.data = activo;
@@ -72,7 +72,7 @@ async function createEndOfLifeNotifications() {
 }
 
 function getRemainingLife(activo, currentDate) {
-    let finVidaUtil = moment(activo.created_at).add(activo.vida_util_meses, 'months').format("YYYY-MM-DD");
+    let finVidaUtil = moment(activo.fecha_compra).add(activo.vida_util_meses, 'months').format("YYYY-MM-DD");
     return moment(finVidaUtil).diff(moment(currentDate), 'days');
 }
 
@@ -86,7 +86,7 @@ async function createBorrowingReturnNotifications() {
         for (let movimiento of movimientos) {
             movimiento.tiempo_faltante_retorno = getTimeLeftToReturn(movimiento, moment().tz("America/Caracas"));
             //se agrega la notificacion si le falta 2 semanas o menos
-            if(movimiento.tiempo_faltante_retorno <= 14 && movimiento.tiempo_faltante_retorno >= 0) {
+            if(movimiento.tiempo_faltante_retorno <= 65 && movimiento.tiempo_faltante_retorno >= 0) {
                 let notificacionObj = {};
                 notificacionObj.tipo = 'fin_prestamo';
                 notificacionObj.data = movimiento;
