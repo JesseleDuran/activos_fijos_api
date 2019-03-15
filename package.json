@@ -1,7 +1,8 @@
 {
-  "name": "guests_server",
-  "version": "0.0.0",
-  "private": true,
+  "name": "activos_fijos_api",
+  "version": "1.0.0",
+  "description": "API del módulo de activos fijos de la empresa Maderas del Orinoco",
+  "author": "Jessele Durán",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
