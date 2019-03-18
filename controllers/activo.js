@@ -47,7 +47,6 @@ async function update(params, activoId) {
 
 async function getList(params) {
     try {
-        console.log(Queries.listActivos(params))
         const pool = new Pool();
         const allActivos = await pool.query(Queries.listActivos(params));
         for (x in allActivos.rows) {

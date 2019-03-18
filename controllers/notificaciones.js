@@ -53,13 +53,12 @@ async function createEndOfLifeNotifications() {
         const activos = allActivos.rows;
         for (let activo of activos) {
             activo.vida_util_faltante_dias = getRemainingLife(activo, moment().tz("America/Caracas"));
-            //se agrega la notificacion si le falta 2 semanas o menos
+            //se agrega la notificacion si le falta 2 meses o menos
             if(activo.vida_util_faltante_dias <= 65 && activo.vida_util_faltante_dias >= 0) {
                 let notificacionObj = {};
                 notificacionObj.tipo = 'fin_vida_util';
                 notificacionObj.data = activo;
                 let newNotificacion = await create(notificacionObj, pool);
-                console.log(newNotificacion);
             }
         }
         await pool.end();
@@ -85,13 +84,12 @@ async function createBorrowingReturnNotifications() {
         const movimientos = listMovimientos.rows;
         for (let movimiento of movimientos) {
             movimiento.tiempo_faltante_retorno = getTimeLeftToReturn(movimiento, moment().tz("America/Caracas"));
-            //se agrega la notificacion si le falta 2 semanas o menos
+            //se agrega la notificacion si le falta 2 meses o menos
             if(movimiento.tiempo_faltante_retorno <= 65 && movimiento.tiempo_faltante_retorno >= 0) {
                 let notificacionObj = {};
                 notificacionObj.tipo = 'fin_prestamo';
                 notificacionObj.data = movimiento;
                 let newNotificacion = await create(notificacionObj, pool);
-                console.log(newNotificacion);
             }
         }
         await pool.end();
