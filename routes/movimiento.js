@@ -23,7 +23,7 @@ secureRouter.use(auth.jwt());
  *           type: object
  *           properties:
  *             tipo:
- *               description: Código del artículo, viene de SIV_ARTICULO.codart.
+ *               description: Representa el tipo de movimiento.
  *               type: string
  *               enum: ['asignacion', 'reasignacion', 'prestamo', 'desincorporacion', 'reparacion', 'salida']
  *             motivo:
