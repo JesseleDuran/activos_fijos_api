@@ -39,7 +39,7 @@ const LIST_ACTIVOS_ASIGNADOS_REASIGNADO = `${LIST_ACTIVOS} WHERE estatus='Asigna
 
 const LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación' OR estatus!='En reparación'`;
 
-const LIST_ACTIVOS_NO_DESINCORPORADOS_ASIGNADOS = `${LIST_ACTIVOS} WHERE estatus='Asignado' AND estatus!='En proceso de desincorporación'`;
+const LIST_ACTIVOS_NO_DESINCORPORADOS_ASIGNADOS = `${LIST_ACTIVOS} WHERE estatus='Asignado' OR estatus='Reasignado' OR estatus!='En proceso de desincorporación'`;
 
 const GET_ACTIVO = `${LIST_ACTIVOS} WHERE n_activo = $1;`;
 
