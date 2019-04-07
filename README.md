@@ -4,8 +4,8 @@ API para el Módulo de Activos Fijos de Maderas del Orinoco
 
 ### Prerequisitos
 
--   node >= v10.9.0
--   npm >= v6.2.0
+-   node >= v10.10.0
+-   npm >= 6.4.1
 
 ## Setup
 
