@@ -37,9 +37,9 @@ const LIST_ACTIVOS_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proc
 
 const LIST_ACTIVOS_ASIGNADOS_REASIGNADO = `${LIST_ACTIVOS} WHERE estatus='Asignado' OR estatus='Reasignado'`;
 
-const LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación' OR estatus!='En reparación'`;
-
 const LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS = `${LIST_ACTIVOS} WHERE estatus!='En proceso de desincorporación' OR estatus!='En reparación'`;
+
+const LIST_ACTIVOS_NO_DESINCORPORADOS_ASIGNADOS = `${LIST_ACTIVOS} WHERE estatus='Asignado' OR estatus='Reasignado' OR estatus!='En proceso de desincorporación'`;
 
 const GET_ACTIVO = `${LIST_ACTIVOS} WHERE n_activo = $1;`;
 
@@ -193,7 +193,7 @@ module.exports = {
     LIST_ACTIVOS_NO_ASIGNADOS,
     LIST_ACTIVOS_NO_DESINCORPORADOS,
     LIST_ACTIVOS_ASIGNADOS_REASIGNADO,
-    LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS,
     LIST_ACTIVOS_NO_REPARACION_NO_DESINCORPORADOS,
+    LIST_ACTIVOS_NO_DESINCORPORADOS_ASIGNADOS,
     listActivosReportes
 };

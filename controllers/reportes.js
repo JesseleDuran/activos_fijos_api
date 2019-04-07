@@ -5,7 +5,6 @@ const moment = require('moment');
 
 async function getList(params) {
     try {
-        console.log(Queries.listActivosReportes(params))
         const pool = new Pool();
         const allActivos = await pool.query(Queries.listActivosReportes(params));
         await pool.end();

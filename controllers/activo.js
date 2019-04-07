@@ -47,7 +47,6 @@ async function update(params, activoId) {
 
 async function getList(params) {
     try {
-        console.log(Queries.listActivos(params))
         const pool = new Pool();
         const allActivos = await pool.query(Queries.listActivos(params));
         for (x in allActivos.rows) {
@@ -71,10 +70,10 @@ async function getListByMovement(params) {
                 query = Queries.LIST_ACTIVOS_NO_ASIGNADOS;
                 break;
             case 'reasignacion':
-                query =  Queries.LIST_ACTIVOS_NO_DESINCORPORADOS;
+                query =  Queries.LIST_ACTIVOS_NO_DESINCORPORADOS_ASIGNADOS;
                 break;
             case 'prestamo':
-                query = Queries.LIST_ACTIVOS_NO_PRESTAMO_NO_DESINCORPORADOS;
+                query = Queries.LIST_ACTIVOS_NO_DESINCORPORADOS;
                 break; 
             case 'desincorporacion':
                 query = Queries.LIST_ACTIVOS_NO_DESINCORPORADOS;
