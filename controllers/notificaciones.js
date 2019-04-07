@@ -62,8 +62,6 @@ async function createEndOfLifeNotifications() {
             }
         }
         await pool.end();
-        var myJob = schedule.scheduledJobs['fin_vida_util_job'];
-        myJob.cancel();
     } catch (e) {
         console.log(e);
         throw new ApiError("Error en los parametros ingresados", 400);
@@ -93,8 +91,6 @@ async function createBorrowingReturnNotifications() {
             }
         }
         await pool.end();
-        var myJob = schedule.scheduledJobs['fin_prestamo'];
-        myJob.cancel();
     } catch (e) {
         console.log(e);
         throw new ApiError("Error en los parametros ingresados", 400);
